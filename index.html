@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>人工智能导论（第2版）习题练习系统</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --text:#1f2430; --muted:#6b7280;
+  --accent:#2563eb; --accent2:#1d4ed8; --line:#e5e9f2;
+  --ok:#16a34a; --okbg:#e8f7ee; --bad:#dc2626; --badbg:#fdecec;
+  --chip:#eef2ff; --shadow:0 2px 10px rgba(30,50,90,.08);
+}
+[data-theme="dark"]{
+  --bg:#0f1420; --card:#1a2130; --text:#e8ecf4; --muted:#98a2b3;
+  --accent:#5b8cff; --accent2:#7ba4ff; --line:#2a3348;
+  --ok:#34d399; --okbg:#10322a; --bad:#f87171; --badbg:#3a1520;
+  --chip:#232c40; --shadow:0 2px 10px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Segoe UI','PingFang SC','Microsoft YaHei','微软雅黑',sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh;
+  display:flex; flex-direction:column; transition:background .25s,color .25s;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+header{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+header .brand{font-weight:700;font-size:16px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{font-size:18px;padding:6px 10px;border-radius:8px;background:var(--chip)}
+main{flex:1;width:100%;max-width:860px;margin:0 auto;padding:18px 14px 40px}
+section.view{display:none}
+section.view.active{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:12px 16px 20px;border-top:1px solid var(--line)}
+.hero{text-align:center;padding:26px 8px 10px}
+.hero h1{font-size:24px;margin-bottom:6px}
+.hero p{color:var(--muted);font-size:13px}
+.notebox{
+  background:var(--chip);border:1px solid var(--line);border-radius:12px;
+  padding:10px 14px;font-size:12.5px;color:var(--muted);margin:14px 0;
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:16px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px;box-shadow:var(--shadow);text-align:left;display:block;width:100%;
+  transition:transform .12s,border-color .12s;color:var(--text);
+}
+.card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.card .ic{font-size:26px}
+.card .tt{font-weight:700;font-size:16px;margin-top:6px}
+.card .ds{color:var(--muted);font-size:12.5px;margin-top:2px}
+.badge{
+  display:inline-block;background:var(--accent);color:#fff;border-radius:999px;
+  font-size:11px;padding:1px 9px;margin-left:6px;vertical-align:2px;
+}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{
+  background:var(--chip);border:1px solid var(--line);border-radius:10px;
+  padding:8px 14px;font-size:14px;transition:.12s;
+}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.primary:hover{background:var(--accent2)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.topbar .qt{font-weight:700;font-size:15px;flex:1;min-width:120px}
+.progress{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .2s}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.qmeta{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.tag{background:var(--chip);border-radius:8px;padding:2px 10px;font-size:12.5px;color:var(--accent);font-weight:600}
+.stem{font-size:16px;font-weight:600;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{
+  display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;
+  border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;
+  background:var(--card);font-size:15px;transition:.12s;color:var(--text);
+}
+.opt .L{
+  flex:none;width:26px;height:26px;border-radius:50%;background:var(--chip);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:var(--ok);background:var(--okbg)}
+.opt.correct .L{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt.wrong .L{background:var(--bad);color:#fff}
+.opt.picked{border-color:var(--accent);background:var(--chip)}
+.feedback{border-radius:12px;padding:12px 14px;margin-top:14px;font-size:14px}
+.feedback.ok{background:var(--okbg);border:1px solid var(--ok)}
+.feedback.no{background:var(--badbg);border:1px solid var(--bad)}
+.feedback .fx-title{font-weight:700;margin-bottom:4px}
+.feedback .analysis{color:var(--text);font-size:13.5px;margin-top:6px}
+.navrow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.navrow .spacer{flex:1}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;background:var(--chip);border-radius:8px;padding:4px 12px}
+.timer.warn{color:var(--bad)}
+.sheet{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:12px}
+.sheet button{
+  aspect-ratio:1;border:1.5px solid var(--line);border-radius:8px;font-size:12px;
+  background:var(--card);color:var(--text);
+}
+.sheet button.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.result{text-align:center;padding:14px 0}
+.score{font-size:52px;font-weight:800;color:var(--accent)}
+.score small{font-size:16px;color:var(--muted);font-weight:500}
+.result .line{color:var(--muted);font-size:14px;margin-top:4px}
+.result .chips{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.result .chips span{background:var(--chip);border-radius:8px;padding:4px 12px;font-size:13px}
+.accbar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:8px 0 2px}
+.accbar i{display:block;height:100%;background:var(--ok)}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:13px}
+.browseitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.browseitem .bq{font-weight:600;font-size:15px}
+.answerbox{display:none;margin-top:10px;border-left:3px solid var(--accent);padding:8px 12px;background:var(--chip);border-radius:0 10px 10px 0;font-size:14px;white-space:pre-wrap}
+.answerbox.show{display:block;animation:fadein .2s ease}
+.chaptabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.chaptabs button{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 16px;font-size:14px}
+.chaptabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chapblock{display:none}
+.chapblock.on{display:block;animation:fadein .2s ease}
+.empty{text-align:center;color:var(--muted);padding:40px 10px}
+@media (max-width:520px){
+  .hero h1{font-size:20px}
+  .grid{grid-template-columns:1fr 1fr}
+  .card{padding:12px}
+  .sheet{grid-template-columns:repeat(8,1fr)}
+  header .brand{font-size:14px}
+}
+</style>
+</head>
+<body>
+<header>
+  <button class="iconbtn" id="homeBtn" title="返回首页">🏠</button>
+  <div class="brand">人工智能导论（第2版）习题练习系统</div>
+  <button class="iconbtn" id="themeBtn" title="切换深浅色">🌙</button>
+</header>
+
+<main>
+  <section class="view active" id="view-home"></section>
+  <section class="view" id="view-quiz"></section>
+  <section class="view" id="view-result"></section>
+  <section class="view" id="view-browse"></section>
+  <section class="view" id="view-stats"></section>
+</main>
+
+<footer>
+  人工智能导论（第2版）习题练习系统 · 全部数据保存在本机浏览器 · 请以教材为准
+</footer>
+
+<script>
+const DATA = {"meta": {"note": "本系统中 24 道单项选择题的题干与选项系根据原答案文件的“解析”整理还原，答案与原文件一致；如与教材原题有出入，请以教材为准。思考题、操作题题干及参考答案取自原答案文件。", "examTime": 30}, "chapters": {"1": {"title": "人工智能概述", "choice": [{"num": "1", "stem": "下列选项中，被认为是人工智能学科诞生标志的事件是（　　）。", "options": ["A、达特茅斯会议", "B、图灵测试的提出", "C、“深蓝”击败卡斯帕罗夫", "D、AlphaGo击败李世石"], "answer": "A", "answerText": "达特茅斯会议", "analysis": "1956年夏，约翰·麦卡锡联合马文·明斯基等学者在美国达特茅斯学院发起并组织了首次人工智能研讨会，这场会议被认为是人工智能的开端。而“深蓝”击败卡斯帕罗夫（1997年）、AlphaGo击败李世石（2016年）、图灵测试的提出（1950年）均不是学科诞生的标志性事件。"}, {"num": "2", "stem": "2012年，AlexNet模型在图像分类竞赛中取得巨大成功，标志着（　　）在计算机视觉领域取得重要突破。", "options": ["A、机器学习", "B、深度学习", "C、强化学习", "D、迁移学习"], "answer": "B", "answerText": "深度学习", "analysis": "2012年AlexNet模型在图像分类竞赛中取得巨大成功，标志着深度学习在计算机视觉领域取得重要突破。此后，深度学习技术的发展极大地推动了人工智能在搜索引擎、推荐系统、语音识别、图像处理等各个领域的广泛应用。"}, {"num": "3", "stem": "强调智能活动是大量简单单元通过复杂连接后并行运行的结果，主张通过人工构造神经网络并训练网络来产生智能的学派是（　　）。", "options": ["A、符号主义", "B、连接主义", "C、行为主义", "D、建构主义"], "answer": "B", "answerText": "连接主义", "analysis": "连接主义学派强调智能活动是大量简单单元通过复杂连接后并行运行的结果，主张通过人工构造神经网络并训练网络来产生智能。符号主义基于逻辑推理，行为主义（又称进化主义）基于“感知—行动”。"}, {"num": "4", "stem": "又称狭义人工智能、专注于实现特定领域的智能应用，是目前应用最为广泛的人工智能形态的是（　　）。", "options": ["A、弱人工智能", "B、强人工智能", "C、超人工智能", "D、智能体"], "answer": "A", "answerText": "弱人工智能", "analysis": "弱人工智能又称狭义人工智能，专注于实现特定领域的智能应用（如人脸识别、机器翻译、自动驾驶等），是目前应用最为广泛的人工智能形态。强人工智能（AGI）和超人工智能（ASI）仍是科研与产业界致力实现的前沿目标。"}, {"num": "5", "stem": "关于人工智能对就业的影响，下列说法错误的是（　　）。", "options": ["A、会取代部分重复性岗位", "B、会创造新的就业岗位", "C、能提高生产效率和降低成本", "D、导致所有行业就业人数增加"], "answer": "D", "answerText": "导致所有行业就业人数增加", "analysis": "人工智能对职业的影响是复杂而深远的：它既会取代部分重复性岗位，也会创造新岗位，还能提高生产效率和降低成本；但并非所有行业的就业人数都会增加，人工智能导致的是就业结构的变化而非普遍性增长。"}], "subjective": [{"num": "1", "q": "简述人工智能在医疗领域的应用前景，并讨论它可能带来的帮助与潜在风险。", "a": "应用前景：①医学影像分析——利用深度学习对X光、CT、MRI、超声和病理切片进行识别与分析，辅助医生检测肿瘤区域、判断病灶大小、识别异常组织；②临床辅助决策——根据患者症状、检查结果和既往病史，提示可能的诊断方向、推荐进一步检查项目或提醒潜在用药风险；③自然语言处理医疗文本——从电子病历中提取主要症状、病史、用药情况，辅助生成病历摘要、检索医学文献；④药物研发——分析分子结构、疾病机制、临床试验数据，提高候选药物筛选效率、优化临床试验设计；⑤慢性病管理与健康监测——结合可穿戴设备数据对糖尿病、高血压等慢性病进行风险评估和干预建议。\n帮助：提高诊断效率和准确性，缓解医疗资源不均问题，降低医疗成本，推动普惠医疗发展；辅助医生决策，减少人为失误，减轻医生文书处理负担。\n潜在风险：①数据质量问题——医疗数据来源复杂、格式标准不一，影响模型的准确性与泛化能力；②隐私与伦理问题——医疗数据涉及个人健康隐私，存在泄露与滥用风险；③算法偏差问题——训练数据覆盖不全可能对某些群体产生不公平或不准确的判断；④责任归属问题——AI建议与医生判断不一致或导致不良后果时，医生、医院、技术公司和监管机构的责任难以界定；⑤可解释性不足——深度学习决策过程复杂，难以向医患解释。"}, {"num": "2", "q": "描述人工智能技术对就业市场的影响，特别是对哪些行业的影响较大。", "a": "人工智能技术对就业市场的影响是复杂而深远的：一方面，依托自动化技术替代重复性、技能要求不高的工作岗位，如部分生产线操作工、收银员、司机等，这种趋势在制造业、零售业和交通行业中尤为明显，产生“技术性失业”；另一方面，人工智能创造了新的就业机会，如数据科学家、算法工程师、人工智能产品经理等，并为无人驾驶、机器人、虚拟助手等新兴行业带来新职位。此外，人工智能还改变了职业的工作内容，要求劳动者具备更强的技术和信息处理能力。长期来看，就业市场将向高技能、高创造性领域倾斜，低技能劳动者需通过再培训适应转型。"}, {"num": "3", "q": "讨论数字员工如何改变传统工作模式并为企业带来机遇。", "a": "数字员工（以RPA机器人、智能体为代表）通过流程自动化改变传统工作模式：①流程自动化——替代人工处理发票核验、报表生成等重复性任务；②7×24小时不间断运行，如客服机器人全天候响应，提升效率；③数据驱动决策——AI分析海量数据辅助管理层制定战略（如供应链优化）。\n为企业带来的机遇：①成本降低——减少人力支出、提高运营效率；②创新加速——释放人力资源聚焦产品研发、市场拓展等创新业务；③服务升级——通过AI提供个性化推荐等智能服务，提升客户体验。\n同时企业也面临挑战：需重新设计组织架构，培养员工与数字系统协作的能力。数字员工改变的是“人机协作”模式而非简单替代，未来职场将走向人机协同、相互赋能的共生时代。"}]}, "2": {"title": "大模型与提示词工程", "choice": [{"num": "1", "stem": "（　　）是引导和控制大模型生成特定输出的输入文本。", "options": ["A、提示词工程", "B、大模型", "C、提示词", "D、指令微调"], "answer": "C", "answerText": "提示词", "analysis": "提示词工程指通过精心设计输入提示来引导模型生成与任务相关的内容。提示词是引导和控制大模型生成特定输出的输入文本，其质量和具体性直接影响大模型输出的准确性和相关性。"}, {"num": "2", "stem": "可微提示（软提示）技术的主要特点是（　　）。", "options": ["A、使用固定不变的提示词", "B、将提示词作为模型的可学习参数", "C、完全不使用提示词", "D、由用户手工撰写全部提示词"], "answer": "B", "answerText": "将提示词作为模型的可学习参数", "analysis": "可微提示或软提示技术将提示词作为模型的可学习参数，允许模型在训练过程中动态更新提示，以更好地适应任务需求和数据分布，从而提高生成内容的质量。"}, {"num": "3", "stem": "为模型提供特定的情境或背景、通常带有假设性，使模型输出贴合特定场景内容的提示词属于（　　）。", "options": ["A、开放型提示词", "B、情境型提示词", "C、任务型提示词", "D、角色型提示词"], "answer": "B", "answerText": "情境型提示词", "analysis": "情境型提示词为模型提供了一个特定的情境或背景，目的是使模型深入理解任务要求，输出贴合特定场景的内容，通常带有假设性。开放型提示词宽泛不限制答案，任务型提示词是明确具体的指令。"}, {"num": "4", "stem": "零样本提示和少样本提示共同关注的核心问题是（　　）。", "options": ["A、如何提高模型的泛化能力", "B、如何压缩模型的参数量", "C、如何减少模型的训练数据", "D、如何延长模型的上下文窗口"], "answer": "A", "answerText": "如何提高模型的泛化能力", "analysis": "零样本提示和少样本提示都旨在利用大模型的强大预训练知识，通过最小化的示例输入，实现对复杂任务的快速适配和高效处理，本质上是提升模型在新任务上的泛化能力。"}, {"num": "5", "stem": "思维链提示的核心思想是要求大模型（　　）。", "options": ["A、直接给出最终答案", "B、解释推理过程", "C、减少中间推理步骤", "D、隐藏计算过程"], "answer": "B", "answerText": "解释推理过程", "analysis": "思维链提示的核心思想是要求大模型展示自己的推理过程，将大的目标拆解成小的目标，逐步思考和计算，最终得到结果，而不是直接给出最终答案。"}], "subjective": [{"num": "1", "q": "简述在大模型中使用提示词的重要性和作用。", "a": "提示词是用来引导和控制大模型生成特定输出的输入文本，常见形式包括指令、问题、角色设定等。提示词工程是伴随大模型发展而兴起的重要技术方法，其作用在于：①明确任务目标——通过精心设计的输入提示引导模型生成与任务相关的内容；②控制输出质量——提示词的质量和具体性直接影响输出的准确性和相关性，设计高质量提示词是提升大模型性能的关键；③塑造输出风格与格式——通过角色设定、格式要求等要素控制生成内容；④降低使用门槛——用户无需修改模型即可通过提示词实现特定功能。"}, {"num": "2", "q": "在设计提示词时，为什么需要考虑提示词的长度、结构和表达方式？", "a": "因为提示词的长度、结构和表达方式会直接影响模型的推理效果，需要根据具体任务和模型特性进行调整和优化：①长度——过短的提示词信息不足、指向不明确，过长的提示词可能包含冗余信息、消耗上下文窗口容量；②结构——任务、上下文、示例、角色、格式、语气等要素完整清晰的提示词，能帮助模型准确理解需求；③表达方式——使用明确的指令动词、避免歧义、提供具体细节，可减少模型“猜测”用户意图的次数，提高输出准确性。精心构建包含完整要素的提示词，可以有效引导模型执行复杂任务并生成高质量内容。"}, {"num": "3", "q": "描述零样本提示和少样本提示在实际应用中的差异。", "a": "零样本提示：直接向大模型提出任务的描述或指令，但不提供如何执行的方法或步骤，模型必须使用其预训练的知识来生成答案，在处理知识型问答等简单任务时十分高效。\n少样本提示：提供一些与任务相关的示例作为上下文信息，让大模型根据示例推断任务的目标和要求并生成期望输出。两者的关键区别在于是否在提示词中添加示例。少样本提示通过示例帮助模型理解任务，但并非示例越多越好——提供2个示例后准确率会有显著提升，提供更多示例后准确率趋于平稳甚至可能下降；示例的顺序也会影响输出结果，通常将最关键的示例放在最后，因为模型对处理的最后一部分信息给予更多权重。"}, {"num": "4", "q": "思维链提示如何引导大模型解决复杂问题？结合一个具体的例子解答。", "a": "思维链提示通过展示中间推理步骤实现复杂推理能力。它要求大模型展示推理过程，将大的目标拆解成小的目标，逐步思考和计算，最终得到结果。其核心是在给模型展示少量示例时展示其中的推理过程，模型在回答问题时也会展示相应的推理过程，从而生成更准确的结果，主要用于提高模型在算术推理、常识推理和符号推理等复杂任务中的性能。有效的思维链应满足：每个思考步骤有逻辑关系、思考全面细致、步骤可行且可验证。\n具体例子：解方程“3x+5=20”时，在提示词中给出参考步骤：第一步，两边同时减去5，得3x=15；第二步，两边同时除以3，得x=5。模型会模仿这种逐步推导的方式完成计算。更简洁的用法是在指令末尾加上“让我们一步步思考”，例如提问“小明有5个苹果，又买了3个，送给朋友2个，还剩几个？让我们一步步思考”，模型会先计算5+3=8，再计算8-2=6，最终给出正确结果6。"}]}, "3": {"title": "人工智能与创意", "choice": [{"num": "1", "stem": "人工智能在艺术创作中的主要作用是（　　）。", "options": ["A、完全替代人类艺术家", "B、作为工具辅助人类创作", "C、取代传统创作工具", "D、限制艺术家的创作自由"], "answer": "B", "answerText": "作为工具辅助人类创作", "analysis": "人工智能在艺术创作中的主要作用是作为工具辅助人类创作，如AI绘画可作为草图构思、灵感发散的辅助工具，帮助创作者快速完成前期创意方案筛选，缩短创作周期，而非完全替代人类艺术家。"}, {"num": "2", "stem": "下列属于人工智能艺术创作技术基础的是（　　）。", "options": ["A、机器学习", "B、深度学习", "C、神经网络", "D、所有以上选项"], "answer": "D", "answerText": "所有以上选项", "analysis": "机器学习、深度学习、神经网络都是人工智能的技术基础，共同用于增强人工智能在艺术创作中的创造力。例如音乐生成模型主要基于深度学习中的Transformer结构和生成式对抗网络。"}, {"num": "3", "stem": "下列哪项不属于人工智能在艺术领域的应用？（　　）", "options": ["A、音乐创作（AI作曲）", "B、绘画和视觉艺术（AI绘画）", "C、体育比赛", "D、诗歌和文学创作（智能写作）"], "answer": "C", "answerText": "体育比赛", "analysis": "人工智能在艺术领域的应用包括音乐创作（AI作曲）、绘画和视觉艺术（AI绘画）、诗歌和文学创作（智能写作）等。体育比赛不属于艺术领域的应用。"}, {"num": "4", "stem": "人工智能在艺术创作中面临的最大挑战包括（　　）。", "options": ["A、缺乏情感表达", "B、缺乏创新能力", "C、缺乏对艺术史的理解", "D、以上所有选项"], "answer": "D", "answerText": "以上所有选项", "analysis": "人工智能在艺术创作中面临的最大挑战包括缺乏情感表达、缺乏创新能力、缺乏对艺术史的理解等，这些因素共同制约着AI艺术创作的水平与深度。"}, {"num": "5", "stem": "对人工智能创作的艺术作品，当前常见的做法是（　　）。", "options": ["A、版权归人工智能系统所有", "B、版权归AI模型开发者所有", "C、版权归使用人工智能的艺术家所有", "D、不享有任何版权"], "answer": "C", "answerText": "版权归使用人工智能的艺术家所有", "analysis": "对人工智能创作的艺术作品，当前常见的做法是版权归使用人工智能的艺术家所有——AI是创作工具，艺术家是创作主体。不过各国司法实践对AI生成内容的可版权性仍存在不同观点，版权归属问题仍是数字艺术领域正在探讨的治理议题。"}], "subjective": [{"num": "1", "q": "人工智能在艺术创作中的角色是否应该被限制，以保护人类艺术家的创作权和艺术的独特性？请讨论其利弊。", "a": "这是一个值得辩证思考的问题。\n利（支持限制的理由）：①保护人类艺术家的创作权和艺术独特性，防止大量AI生成内容冲击人类创作空间；②避免版权归属、创作主体认定的混乱；③维护艺术创作中人类情感、直觉和深度思考的核心价值，防止艺术“同质化”。\n弊（反对限制的理由）：①阻碍技术创新与艺术形式的发展，AI能降低创作门槛、激发灵感、拓展创作边界，如《太空歌剧院》展现了人机协作的潜力；②艺术本身是不断演进的，历史上摄影术的出现也曾引发争议，最终融入了艺术体系；③一刀切限制不利于AI辅助创作产业和普通创作者的参与。\n参考观点：不宜全面限制，而应通过规范引导——明确AI作品的版权归属与标注规则，保护人类创作者权益；鼓励“人机协作”创作，让AI辅助人类表达创意；通过伦理与法律规范防止滥用。关键是在利用AI技术的同时，保持并激发人类创作者的个性与创造力，让AI回归“工具”与“助手”的定位。"}, {"num": "2", "q": "随着人工智能技术的发展，未来艺术创作是否会更多地依赖算法和机器学习，这将如何影响艺术的本质和价值？请提出你的观点并解释原因。", "a": "我的观点：未来艺术创作将更多依赖算法和机器学习，但艺术的本质不会消失，而是被重新定义。\n原因：①AI能加速创作过程、提供灵感、提高创作质量，文生图、文生音乐、文生视频等工具让创作从构思到成品的路径更加通畅，降低专业技法门槛，使更多普通人能够参与创作；②AI拓展了艺术的表现形式，催生跨媒体艺术、互动艺术、AI生成艺术等新形态，模糊了艺术家与观众的界限；③艺术的核心价值将从“技法”转向“创意与判断”——人类负责审美判断、情感表达和深度思考，AI负责快速实现与规模化扩展，创意产业的核心始终是人的创新精神和独特视角。\n因此，艺术的本质（表达情感、传递思想、激发共鸣）不会因AI而改变，但艺术创作的方式、参与主体和价值评价标准将更加多元化、民主化。"}]}, "4": {"title": "智能办公", "choice": [{"num": "1", "stem": "下列技术中，不属于智能文档处理（IDP）核心技术的是（　　）。", "options": ["A、光学字符识别（OCR）", "B、计算机视觉（CV）", "C、自然语言处理（NLP）", "D、音频信号处理"], "answer": "D", "answerText": "音频信号处理", "analysis": "智能文档处理（IDP）基于光学字符识别（OCR）、计算机视觉（CV）、自然语言处理（NLP）、知识图谱（KG）等前沿技术，对各类文档进行识别、分类、抽取、校验等处理。音频信号处理不属于智能文档处理技术。"}, {"num": "2", "stem": "智能文档处理工具的主要目的是（　　）。", "options": ["A、提高文档处理的速度和准确性", "B、完全替代人工完成所有文档工作", "C、限制文档的访问权限", "D、降低文档处理的速度和准确性"], "answer": "A", "answerText": "提高文档处理的速度和准确性", "analysis": "智能文档处理工具能够快速准确地识别文档中的信息、智能编辑和修订、减少人工操作差错，其主要目的是提高文档处理的速度和准确性，而非替代人工完成所有工作或限制文档访问。"}, {"num": "3", "stem": "Kimi智能助手不能处理下列哪种文件？（　　）", "options": ["A、文字文件", "B、声音文件", "C、图片文件", "D、视频游戏"], "answer": "D", "answerText": "视频游戏", "analysis": "Kimi智能助手可以处理文字文件、声音文件、图片文件等，但不能处理视频游戏。"}, {"num": "4", "stem": "下列哪项不属于智能文档处理在演示文稿制作中的作用？（　　）", "options": ["A、自动生成演示文稿", "B、选择演示文稿模板和布局", "C、优化视觉元素的呈现形式", "D、限制演示文稿的内容创意"], "answer": "D", "answerText": "限制演示文稿的内容创意", "analysis": "智能文档处理在演示文稿制作中的作用包括自动生成演示文稿、选择演示文稿模板和布局、优化视觉元素的呈现形式等，不会限制演示文稿的内容创意。"}, {"num": "5", "stem": "下列哪项不属于智能文档处理在图片识别和优化中的功能？（　　）", "options": ["A、图片内容识别", "B、图片自动调整", "C、图片与文稿风格协调", "D、图片的物理打印"], "answer": "D", "answerText": "图片的物理打印", "analysis": "智能文档处理在图片识别和优化中的功能包括图片内容识别、图片自动调整、图片与文稿风格协调等，不包括图片的物理打印。"}, {"num": "6", "stem": "智能文档处理在文档编辑和修订中的主要优势是（　　）。", "options": ["A、增加人工校对的工作量", "B、降低文档编辑的智能化程度", "C、减少人为操作的错误和繁琐", "D、使文档编辑更加繁琐"], "answer": "C", "answerText": "减少人为操作的错误和繁琐", "analysis": "智能文档处理在文档编辑和修订中的主要优势是智能地对文档进行编辑和修订，减少人为操作的错误和繁琐，将人从重复性劳动中解放出来。"}, {"num": "7", "stem": "下列哪项不属于数据分析的基本步骤？（　　）", "options": ["A、数据收集", "B、数据处理", "C、数据分析", "D、数据销毁"], "answer": "D", "answerText": "数据销毁", "analysis": "数据分析的基本步骤通常包括明确思路制定计划、数据收集、数据处理、数据分析、数据展示和撰写报告等，不包含“数据销毁”步骤。"}, {"num": "8", "stem": "在Excel中，用于连接字符串的经典函数是（　　）。", "options": ["A、CONCAT", "B、TEXTJOIN", "C、JOIN", "D、CONCATENATE"], "answer": "D", "answerText": "CONCATENATE", "analysis": "在Excel中，用于连接字符串的经典函数是CONCATENATE（CONCAT是其后继函数，TEXTJOIN支持带分隔符连接，JOIN不是Excel函数）。本题按教材知识点，标准答案为CONCATENATE。"}, {"num": "9", "stem": "在Excel中，根据一个或多个条件对区域求和的函数是（　　）。", "options": ["A、SUMIFA", "B、SUMIFS", "C、COUNTIF", "D、AVERAGEIF"], "answer": "B", "answerText": "SUMIFS", "analysis": "SUMIFS用于根据一个或多个条件对区域求和；SUMIF是单条件求和函数（选项中“SUMIFA”为拼写错误，并非有效函数）；COUNTIF用于按条件计数；AVERAGEIF用于按条件求平均值。"}], "subjective": [{"num": "1", "q": "智能文档处理如何改变传统的文档管理工作流程？请简述其影响。", "a": "①识别自动化——通过OCR、计算机视觉等技术快速准确识别文档中的标题、关键词等信息，实现快速查找或快速整理；②分类智能化——根据文档内容和特征自动归类和管理，替代人工分类归档；③信息抽取与概括——智能分析文档内容，进行信息提取和概括，为用户提供精确有效的信息支持；④编辑修订智能化——智能地对文档进行编辑和修订，减少人工操作差错；⑤依托大模型增强语义理解与交互体验，实现文档问答、知识库检索等。整体上，智能文档处理将文档管理从“人工录入—人工分类—人工检索”的低效模式转变为“自动识别—智能分类—精准检索”的高效模式，大幅提升工作效率、降低人力成本、减少人为错误。"}, {"num": "2", "q": "描述智能文档处理在提高文档安全性方面可以采取的措施。", "a": "①访问权限控制——设置文档的访问、编辑、分享权限，限制未授权访问和分发；②数据加密——对敏感文档进行加密存储和传输；③数据脱敏——对文档中的个人信息、敏感字段进行脱敏处理后再使用或分享；④操作审计与留痕——记录文档的访问、编辑、分享等操作日志，便于追溯责任；⑤云端备份与版本管理——防止数据丢失，通过历史版本追溯修改记录；⑥合规管理——遵循个人信息保护法等法律法规，规范数据的采集、存储与使用，确保文档处理全流程合法合规。"}, {"num": "3", "q": "智能文档处理在教育领域有哪些应用？请举例说明。", "a": "①智能备课与课件制作——根据主题自动生成演示文稿，如用千问生成英语课堂PPT；②长文档阅读与知识库——教师和学生可对教材、论文等提问，AI自动提炼核心要点、生成大纲，如用智谱清言阅读《月亮与六便士》；③作业与试卷生成——根据文档内容自动出题并生成答案与解析；④会议纪要——将课堂、教研会议录音实时转为文字并自动总结要点、提取待办事项；⑤文档校对与排版——智能纠错、按公文或论文标准自动排版（如WPS AI排版）；⑥数据分析——对学生成绩等数据进行分析与可视化；⑦智能写作辅导——辅助学生作文、报告写作与润色。"}, {"num": "4", "q": "为什么在进行数据分析之前需要进行数据采集和数据处理？", "a": "数据采集是数据分析的基础——没有数据就无法开展分析，分析人员需要提前收集与任务相关的数据，并确保数据的完整性和准确性。数据处理则是将数据转化为统一格式、剔除重复项和异常值、填充缺失值、进行数据分组归纳的过程。原因在于：原始数据往往是“脏数据”，存在缺失、重复、异常、格式不统一等问题，若不经处理直接分析，结果会产生偏差甚至错误；通过有效的数据处理，可以显著提高数据分析的准确性和效率，为后续分析提供可靠的数据基础。"}, {"num": "5", "q": "描述在数据分析中如何处理缺失值和异常值，并解释这些处理方法对分析结果的影响。", "a": "缺失值处理：①删除——删除缺失值较多的记录或字段；②填充——用均值、中位数、众数等统计量填充，或基于业务知识、经验推测填充，或重新获取数据。\n异常值处理：①识别——通过统计方法（如Z分数、IQR四分位距）或业务规则发现异常值；②剔除——删除明显错误或干扰的异常值；③替换或修正——用合理值替代；④单独分析——将异常值作为独立对象研究。\n对分析结果的影响：缺失值和异常值若不处理，会导致统计量（均值、方差等）失真、模型拟合偏差、预测结果不准确；不同的处理方法也会影响结果——如用均值填充可能低估数据波动，剔除异常值可能丢失重要信息（异常值有时反映真实的业务异常），因此需根据业务场景和数据特点选择合适方法，并记录处理过程以保证结果可追溯。"}, {"num": "6", "q": "讨论在大数据时代个人隐私保护在数据采集和分析中的重要性及其挑战。", "a": "重要性：大数据时代数据采集范围广泛、分析深度增强，个人数据（位置、消费、健康、社交等）被大量采集和分析，若缺乏保护，可能导致隐私泄露、数据滥用、“大数据杀熟”、精准诈骗等问题，严重侵害个人权益与社会公平。隐私保护是人工智能伦理与法律治理的核心议题。\n挑战：①数据需求与隐私保护的天然矛盾——AI模型性能提升依赖海量数据，与隐私保护诉求存在结构性冲突；②透明度不足——用户往往不知晓自身数据的具体用途；③技术挑战——匿名化、脱敏技术可能被重新识别；④法律与监管挑战——现有法律框架适应性不足，数据跨境流动监管困难；⑤企业商业利益与用户权益的平衡难题。\n应对思路：遵循数据最小化原则，仅采集必要数据；落实《个人信息保护法》、GDPR等法规要求；发展联邦学习、同态加密、差分隐私等技术实现“数据可用不可见”；提高数据使用透明度，赋予用户访问、更正、删除等数据控制权。"}]}, "5": {"title": "智能体", "choice": [], "subjective": [{"num": "1", "q": "在新闻筛选智能体中，大模型节点“精选新闻”的系统提示词，要求筛选出多少条最有价值的科技新闻，并按什么顺序排列？", "a": "“精选新闻”节点的系统提示词要求：从提供的搜索结果中筛选出一周内最有价值的5条科技新闻，并按重要性排序，以编号列表形式输出。每条新闻需包含标题、发布日期、核心内容（1～2句话总结关键信息）、信息来源（可选，需标注）。"}, {"num": "2", "q": "“知识产权小助手”智能体专注于哪方面的法律和合同内容，不解答哪些内容？", "a": "“知识产权小助手”智能体专注于知识产权方面的法律和相关的合同协议等内容，具体包括商标法、著作权法、专利法等相关法律条文，以及知识产权相关的合同、保守商业秘密约定书、标志设计委托合同书、参选作品委托创作合同、成套设备技术引进合同、出版合同、著作权转让合同、商业零售经营单位知识产权保护合同等各类合同和协议内容；不解答其他法律条文的内容（如婚姻法等与知识产权无关的法律问题）。"}, {"num": "3", "q": "在创建“知识产权小助手”智能体的知识库时，支持哪几种内容格式？分别说明其检索和召回方式。", "a": "支持文本、表格、图片三种内容格式。①文本：基于内容片段进行检索和召回；②表格：基于索引列的匹配按行进行检索和召回；③图片：基于标注信息的匹配进行检索和召回。"}, {"num": "4", "q": "在“知识产权小助手”智能体的对话流中，“意图识别”节点对用户问题如何分类，分别流转至哪些节点处理？", "a": "“意图识别”节点将用户问题分为三类：①知识产权的法律条文类问题——流转至“知识产权法律”节点，由知识产权法律知识库召回相关内容后输出；②知识产权合同协议类问题——流转至“知识产权合同”节点，其中包含多项售后话术、场景问题，召回知识后输出；③其他类别的问题——统一流转至“文本处理”节点，输出统一文案，引导用户转人工处理。"}, {"num": "5", "q": "对于未命中任何分类的意图，“文本处理”节点会输出什么内容来指导用户？", "a": "对于未命中任何分类的意图（例如不属于知识产权的问题），“文本处理”节点会统一输出一段文案，内容是“非常抱歉我只处理知识产权的法律和合同问题”，指导用户提交工单或联系人工客服。"}, {"num": "6", "q": "请设计“旅游规划”智能体。", "a": "设计方案：\n①智能体定位与功能：为用户提供个性化旅游规划服务的智能体，能够根据用户输入的旅游目的地、出行时间、预算等信息，规划出包含景点安排、交通方式、住宿推荐、美食攻略等内容的详细旅游行程。\n②知识库构建：收集各个旅游目的地的景点信息、交通方式、住宿推荐、美食攻略等文本和图片资料，按目的地分类建立知识库（支持文本、图片格式），为智能体提供专业知识支撑，使回答更准确、个性化。\n③对话流设计：通过“开始”节点收集用户需求（旅游目的地、出行时间、预算等）→“意图识别”节点判断用户意向是国内旅游还是国外旅游→流转至不同的分支节点：如国内游分支，进一步细化询问具体城市等信息→根据知识库召回相关内容（景点、交通、住宿、美食）→通过大模型节点将检索结果包装为友好的回复文本输出给用户。\n④预期效果：能够快速、准确地为用户提供个性化的旅游规划方案，提升用户体验。"}]}}};
+
+/* ---------- 工具 ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const allChoice = Object.keys(DATA.chapters).flatMap(ch =>
+  DATA.chapters[ch].choice.map(q => ({ ch, q })));
+const qId = x => x.ch + '-' + x.q.num;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl = s => esc(s).replace(/\n/g, '<br>');
+
+const LS = {
+  get(k, d){ try{ const v = JSON.parse(localStorage.getItem(k)); return v ?? d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+/* ---------- 统计与错题 ---------- */
+const freshStats = () => ({ all:{a:0,c:0}, ch:{} });
+const getStats = () => LS.get('aigk_stats', freshStats());
+const saveStats = s => LS.set('aigk_stats', s);
+const getWrong = () => LS.get('aigk_wrong', []);
+const saveWrong = w => LS.set('aigk_wrong', w);
+
+function recordAnswer(ch, ok){
+  const s = getStats();
+  s.all.a += 1; if(ok) s.all.c += 1;
+  s.ch[ch] = s.ch[ch] || {a:0,c:0};
+  s.ch[ch].a += 1; if(ok) s.ch[ch].c += 1;
+  saveStats(s);
+}
+function addWrong(id){ const w = getWrong(); if(!w.includes(id)) w.push(id); saveWrong(w); }
+function removeWrong(id){ saveWrong(getWrong().filter(x => x !== id)); }
+
+/* ---------- 主题 ---------- */
+function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); $('#themeBtn').textContent = t==='dark' ? '☀️' : '🌙'; }
+$('#themeBtn').addEventListener('click', () => {
+  const t = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  LS.set('aigk_theme', t); applyTheme(t);
+});
+applyTheme(LS.get('aigk_theme','light'));
+
+/* ---------- 视图切换 ---------- */
+function show(id){ $$('section.view').forEach(v => v.classList.remove('active')); $('#'+id).classList.add('active'); window.scrollTo({top:0}); }
+$('#homeBtn').addEventListener('click', renderHome);
+
+/* ---------- 首页 ---------- */
+function renderHome(){
+  const wrong = getWrong(), st = getStats();
+  const acc = st.all.a ? Math.round(st.all.c/st.all.a*100) : '—';
+  $('#view-home').innerHTML = `
+    <div class="hero">
+      <h1>人工智能导论（第2版）习题练习系统</h1>
+      <p>第1～5章 · 共 ${allChoice.length} 道选择题 · 思考题与操作题浏览 · 离线可用</p>
+    </div>
+    <div class="notebox">📌 ${esc(DATA.meta.note)}</div>
+    <div class="grid">
+      <button class="card" id="c-mode">
+        <div class="ic">📖</div><div class="tt">章节刷题</div>
+        <div class="ds">按章节顺序练习单选题，选完立即判分并显示解析</div>
+      </button>
+      <button class="card" id="c-random">
+        <div class="ic">🎲</div><div class="tt">随机抽题</div>
+        <div class="ds">从全部题目中随机抽取，打乱顺序练习</div>
+      </button>
+      <button class="card" id="c-exam">
+        <div class="ic">⏱️</div><div class="tt">模拟考试</div>
+        <div class="ds">24 题 · ${DATA.meta.examTime} 分钟限时 · 交卷自动评分出成绩单</div>
+      </button>
+      <button class="card" id="c-wrong">
+        <div class="ic">📕</div><div class="tt">错题本</div>
+        <div class="ds">重做做错的题，答对自动移出错题本${wrong.length ? `<span class="badge">${wrong.length} 题</span>` : ''}</div>
+      </button>
+      <button class="card" id="c-browse">
+        <div class="ic">📝</div><div class="tt">思考题浏览</div>
+        <div class="ds">思考题与操作题：先自己作答，再点开参考答案对照</div>
+      </button>
+      <button class="card" id="c-stats">
+        <div class="ic">📊</div><div class="tt">学习统计</div>
+        <div class="ds">做题数、正确率、各章掌握情况${st.all.a ? ` · 当前正确率 ${acc}%` : ''}</div>
+      </button>
+    </div>`;
+  $('#c-mode').addEventListener('click', renderChapterPicker);
+  $('#c-random').addEventListener('click', renderRandomPicker);
+  $('#c-exam').addEventListener('click', startExam);
+  $('#c-wrong').addEventListener('click', startWrong);
+  $('#c-browse').addEventListener('click', renderBrowse);
+  $('#c-stats').addEventListener('click', renderStats);
+  show('view-home');
+}
+
+function renderChapterPicker(){
+  const chs = Object.keys(DATA.chapters).filter(ch => DATA.chapters[ch].choice.length);
+  $('#view-home').innerHTML = `
+    <div class="hero"><h1>选择章节</h1><p>点击开始按顺序刷该章单选题</p></div>
+    <div class="grid">
+      ${chs.map(ch => {
+        const t = DATA.chapters[ch].title;
+        return `<button class="card" data-ch="${ch}">
+          <div class="ic">📖</div><div class="tt">第${ch}章 · ${esc(t)}</div>
+          <div class="ds">${DATA.chapters[ch].choice.length} 道单选题</div>
+        </button>`;
+      }).join('')}
+      <button class="card" id="backHome"><div class="ic">🏠</div><div class="tt">返回首页</div><div class="ds">取消选择</div></button>
+    </div>`;
+  $$('#view-home .card[data-ch]').forEach(b => b.addEventListener('click', () =>
+    startQuiz('chapter', '第' + b.dataset.ch + '章刷题', DATA.chapters[b.dataset.ch].choice.map(q => ({ch:b.dataset.ch, q})))));
+  $('#backHome').addEventListener('click', renderHome);
+}
+
+function renderRandomPicker(){
+  $('#view-home').innerHTML = `
+    <div class="hero"><h1>随机抽题</h1><p>选择抽取数量（共 ${allChoice.length} 题）</p></div>
+    <div class="row">${[5,10,15,20,24].map(n =>
+      `<button class="btn" data-n="${n}">抽 ${n} 题</button>`).join('')}
+      <button class="btn" id="backHome2">取消</button>
+    </div>`;
+  $$('#view-home .btn[data-n]').forEach(b => b.addEventListener('click', () => {
+    const n = Math.min(+b.dataset.n, allChoice.length);
+    const pool = [...allChoice].sort(() => Math.random() - 0.5).slice(0, n);
+    startQuiz('random', `随机抽题（${n} 题）`, pool);
+  }));
+  $('#backHome2').addEventListener('click', renderHome);
+}
+
+/* ---------- 答题核心 ---------- */
+const state = { mode:null, title:'', queue:[], idx:0, answered:{}, wrongMode:false,
+  exam:false, selected:{}, timerId:null, timeLeft:0, examDone:false, review:false, startTs:null };
+
+function startQuiz(mode, title, queue){
+  Object.assign(state, { mode, title, queue, idx:0, answered:{}, wrongMode: mode==='wrong',
+    exam:false, selected:{}, review:false, examDone:false });
+  renderQuiz();
+  show('view-quiz');
+}
+
+function startWrong(){
+  const wrong = getWrong();
+  if(!wrong.length){ alert('错题本为空，先去刷题吧！'); return; }
+  const queue = wrong.map(id => { const [c, n] = id.split('-'); return { ch:c, q: DATA.chapters[c].choice.find(x => x.num===n) }; })
+    .filter(x => x.q).sort(() => Math.random() - 0.5);
+  startQuiz('wrong', `错题重做（${queue.length} 题）`, queue);
+}
+
+function startExam(){
+  Object.assign(state, { mode:'exam', title:'模拟考试', queue: allChoice.slice(), idx:0,
+    answered:{}, wrongMode:false, exam:true, selected:{}, review:false, examDone:false,
+    startTs: Date.now() });
+  state.timeLeft = DATA.meta.examTime * 60;
+  clearInterval(state.timerId);
+  state.timerId = setInterval(tick, 1000);
+  renderQuiz();
+  show('view-quiz');
+}
+
+function tick(){
+  state.timeLeft -= 1;
+  const t = $('#timer');
+  if(t) t.textContent = fmtTime(state.timeLeft);
+  if(state.timeLeft <= 0){ clearInterval(state.timerId); submitExam(true); }
+}
+const fmtTime = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+function cur(){ return state.queue[state.idx]; }
+function isAnswered(i){ return state.exam ? !!state.selected[i] : !!state.answered[i]; }
+
+function renderQuiz(){
+  const x = cur();
+  if(!x){ /* 队列结束 */
+    if(state.exam) return submitExam(false);
+    finishPractice();
+    return;
+  }
+  const i = state.idx, total = state.queue.length;
+  const chTitle = DATA.chapters[x.ch].title;
+  const opts = x.q.options.map((o, oi) => {
+    const letter = 'ABCD'[oi];
+    const cls = optCls(i, letter);
+    const dis = state.exam ? '' : (state.answered[i] ? 'disabled' : '');
+    return `<button class="opt ${cls}" data-i="${i}" data-l="${letter}" ${dis}>
+      <span class="L">${letter}</span><span>${esc(o.replace(/^[A-D]、/, ''))}</span></button>`;
+  }).join('');
+
+  let feedback = '';
+  if(!state.exam && state.answered[i]){
+    const ok = state.answered[i] === x.q.answer;
+    feedback = `<div class="feedback ${ok?'ok':'no'}">
+      <div class="fx-title">${ok ? '✅ 回答正确！' : '❌ 回答错误，正确答案是 ' + x.q.answer}</div>
+      ${x.q.analysis ? `<div class="analysis">📖 解析：${esc(x.q.analysis)}</div>` : ''}
+    </div>`;
+  }
+  if(state.exam && state.examDone){
+    const ua = state.selected[i] || '（未作答）';
+    const ok = state.selected[i] === x.q.answer;
+    feedback = `<div class="feedback ${ok?'ok':'no'}">
+      <div class="fx-title">你的答案：${esc(ua)}　正确答案：${x.q.answer}　${ok?'✅':'❌'}</div>
+      ${x.q.analysis ? `<div class="analysis">📖 解析：${esc(x.q.analysis)}</div>` : ''}
+    </div>`;
+  }
+
+  const examBar = state.exam ? `
+    <div class="topbar">
+      <span class="qt">📝 第 ${i+1} / ${total} 题</span>
+      <span class="timer ${!state.examDone && state.timeLeft<=60?'warn':''}" id="timer">${state.examDone ? `用时 ${fmtTime(state.examResult.used)}` : fmtTime(state.timeLeft)}</span>
+      ${state.examDone ? `<span class="tag">已交卷</span>` : `<button class="btn primary" id="submitBtn">交卷</button>`}
+    </div>
+    <div class="sheet">${state.queue.map((_, k) =>
+      `<button class="${state.selected[k]?'done':''}" data-go="${k}">${k+1}</button>`).join('')}</div>` : '';
+
+  $('#view-quiz').innerHTML = `
+    ${state.exam ? '' : `<div class="topbar">
+      <span class="qt">${esc(state.title)} · ${i+1}/${total}</span>
+      <button class="btn" id="quitBtn">退出</button>
+    </div>
+    <div class="progress"><i style="width:${(i+1)/total*100}%"></i></div>`}
+    ${examBar}
+    <div class="qcard">
+      <div class="qmeta">
+        <span class="tag">第${x.ch}章 · ${esc(chTitle)}</span>
+        <span class="tag">单选题 ${x.q.num}</span>
+      </div>
+      <div class="stem">${esc(x.q.stem)}</div>
+      <div class="opts">${opts}</div>
+      ${feedback}
+    </div>
+    <div class="navrow">
+      <button class="btn" id="prevBtn" ${i===0?'disabled':''}>← 上一题</button>
+      <button class="btn primary" id="nextBtn">${i===total-1 ? (state.examDone?'返回成绩单':'完成') : '下一题 →'}</button>
+    </div>`;
+
+  if(!state.exam){
+    $('#quitBtn').addEventListener('click', () => { clearInterval(state.timerId); renderHome(); });
+  }
+  if(state.exam && !state.examDone){
+    $('#submitBtn').addEventListener('click', () => {
+      const left = state.queue.filter((_, k) => !state.selected[k]).length;
+      if(left && !confirm(`还有 ${left} 题未作答，确定交卷吗？`)) return;
+      submitExam(false);
+    });
+    $$('.sheet button').forEach(b => b.addEventListener('click', () => { state.idx = +b.dataset.go; renderQuiz(); }));
+  }
+  $('#prevBtn').addEventListener('click', () => { if(state.idx>0){ state.idx--; renderQuiz(); } });
+  const nb = $('#nextBtn');
+  if(nb) nb.addEventListener('click', () => {
+    if(state.idx < state.queue.length-1){ state.idx++; renderQuiz(); }
+    else {
+      if(state.examDone){ show('view-result'); renderResult(); }
+      else if(state.exam){ submitExam(false); }
+      else finishPractice();
+    }
+  });
+
+  $$('#view-quiz .opt').forEach(b => b.addEventListener('click', () => {
+    const k = +b.dataset.i, letter = b.dataset.l;
+    if(state.exam){ state.selected[k] = letter; renderQuiz(); return; }
+    if(state.answered[k]) return;
+    state.answered[k] = letter;
+    const xq = state.queue[k].q;
+    const ok = letter === xq.answer;
+    recordAnswer(state.queue[k].ch, ok);
+    if(ok && state.wrongMode) removeWrong(qId(state.queue[k]));
+    else if(!ok) addWrong(qId(state.queue[k]));
+    renderQuiz();
+  }));
+}
+
+function optCls(i, letter){
+  if(state.exam && state.examDone){
+    const x = state.queue[i].q;
+    if(letter === x.answer) return 'correct';
+    if(letter === state.selected[i]) return 'wrong';
+    return '';
+  }
+  if(state.exam){
+    return state.selected[i] === letter ? 'picked' : '';
+  }
+  if(state.answered[i]){
+    const x = state.queue[i].q;
+    if(letter === x.answer) return 'correct';
+    if(letter === state.answered[i]) return 'wrong';
+  }
+  return '';
+}
+
+function finishPractice(){
+  const c = state.queue.filter((_, k) => state.answered[k] === state.queue[k].q.answer).length;
+  const t = state.queue.length;
+  alert(`本轮完成！答对 ${c} / ${t} 题（正确率 ${t?Math.round(c/t*100):0}%）。\n答错的题已收入错题本。`);
+  renderHome();
+}
+
+/* ---------- 考试交卷与成绩 ---------- */
+function submitExam(auto){
+  clearInterval(state.timerId);
+  if(state.examDone) return;
+  state.examDone = true;
+  const total = state.queue.length;
+  let correct = 0;
+  const chMap = {};
+  state.queue.forEach((x, k) => {
+    const ok = state.selected[k] === x.q.answer;
+    if(ok) correct++;
+    chMap[x.ch] = chMap[x.ch] || {a:0,c:0};
+    chMap[x.ch].a++; if(ok) chMap[x.ch].c++;
+    recordAnswer(x.ch, ok);
+    if(!ok) addWrong(qId(x));
+  });
+  state.examResult = { correct, total, chMap, used: Math.round((Date.now()-state.startTs)/1000), auto };
+  state.idx = 0;
+  renderResult();
+  show('view-result');
+}
+
+function renderResult(){
+  const r = state.examResult;
+  if(!r){ renderHome(); return; }
+  const acc = Math.round(r.correct/r.total*100);
+  const score = Math.round(r.correct/r.total*100);
+  const grade = score>=90?'优秀':score>=80?'良好':score>=60?'及格':'还需努力';
+  $('#view-result').innerHTML = `
+    <div class="result">
+      <div class="hero"><h1>考试成绩单</h1></div>
+      <div class="score">${score}<small> / 100 分 · ${grade}</small></div>
+      <div class="line">答对 ${r.correct} / ${r.total} 题 · 正确率 ${acc}% · 用时 ${fmtTime(r.used)}</div>
+      ${r.auto ? '<div class="line" style="color:var(--bad)">⏰ 时间到，系统已自动交卷</div>' : ''}
+      <div class="chips">
+        ${Object.keys(r.chMap).map(ch => {
+          const m = r.chMap[ch];
+          return `<span>第${ch}章 ${esc(DATA.chapters[ch].title)}：${m.c}/${m.a}</span>`;
+        }).join('')}
+      </div>
+      <div class="row" style="justify-content:center;margin-top:18px">
+        <button class="btn primary" id="reviewBtn">逐题回顾解析</button>
+        <button class="btn" id="resultHome">返回首页</button>
+      </div>
+    </div>`;
+  $('#reviewBtn').addEventListener('click', () => {
+    state.idx = 0;
+    renderQuiz();
+    show('view-quiz');
+  });
+  $('#resultHome').addEventListener('click', renderHome);
+}
+
+/* ---------- 思考题浏览 ---------- */
+function renderBrowse(){
+  show('view-browse');
+  const chs = Object.keys(DATA.chapters).filter(ch => DATA.chapters[ch].subjective.length);
+  $('#view-browse').innerHTML = `
+    <div class="hero"><h1>思考题 · 操作题浏览</h1><p>先自己尝试作答，再点开参考答案对照</p></div>
+    <div class="chaptabs">${chs.map((ch,i) => `<button data-t="${ch}" class="${i===0?'on':''}">第${ch}章</button>`).join('')}</div>
+    ${chs.map((ch,i) => {
+      const subj = DATA.chapters[ch].subjective;
+      const chNote = ch==='5' ? `<div class="notebox">📌 原答案文件未包含第5章“简答题”的题目与答案，请对照教材第5章简答题部分复习。</div>` : '';
+      return `<div class="chapblock ${i===0?'on':''}" id="chb-${ch}">
+        <h3 style="margin-bottom:4px">第${ch}章 · ${esc(DATA.chapters[ch].title)}（${subj.length} 题）</h3>
+        ${chNote}
+        ${subj.map(q => `
+          <div class="browseitem">
+            <div class="bq">${esc(q.num)}. ${nl(q.q)}</div>
+            <button class="btn" data-toggle="${ch}-${q.num}" style="margin-top:8px">👀 查看参考答案</button>
+            <div class="answerbox" id="ans-${ch}-${q.num}">${nl(q.a)}</div>
+          </div>`).join('')}
+      </div>`;
+    }).join('')}`;
+  $$('#view-browse .chaptabs button').forEach(b => b.addEventListener('click', () => {
+    $$('#view-browse .chaptabs button').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    $$('#view-browse .chapblock').forEach(x => x.classList.remove('on'));
+    $('#chb-'+b.dataset.t).classList.add('on');
+  }));
+  $$('#view-browse [data-toggle]').forEach(b => b.addEventListener('click', () => {
+    const box = $('#ans-'+b.dataset.toggle);
+    const showIt = !box.classList.contains('show');
+    box.classList.toggle('show', showIt);
+    b.textContent = showIt ? '🙈 收起参考答案' : '👀 查看参考答案';
+  }));
+}
+
+/* ---------- 统计 ---------- */
+function renderStats(){
+  show('view-stats');
+  const st = getStats();
+  const wrong = getWrong();
+  const rows = Object.keys(DATA.chapters).filter(ch => st.ch[ch]).map(ch => {
+    const m = st.ch[ch];
+    return `<tr><td>第${ch}章 · ${esc(DATA.chapters[ch].title)}</td>
+      <td>${m.a}</td><td>${m.c}</td>
+      <td>${m.a ? Math.round(m.c/m.a*100)+'%' : '—'}</td></tr>`;
+  }).join('');
+  $('#view-stats').innerHTML = `
+    <div class="hero"><h1>学习统计</h1>
+      <p>共答题 ${st.all.a} 题 · 答对 ${st.all.c} 题 · 正确率 ${st.all.a ? Math.round(st.all.c/st.all.a*100)+'%' : '—'} · 错题本 ${wrong.length} 题</p>
+    </div>
+    <table>
+      <tr><th>章节</th><th>做题数</th><th>答对数</th><th>正确率</th></tr>
+      ${rows || '<tr><td colspan="4" style="color:var(--muted)">暂无答题记录，先去刷几道题吧</td></tr>'}
+    </table>
+    <div class="row" style="margin-top:18px">
+      <button class="btn primary" id="redoWrong">📕 重做错题（${wrong.length}）</button>
+      <button class="btn danger" id="clearWrong">清空错题本</button>
+      <button class="btn danger" id="clearStats">清空答题记录</button>
+    </div>`;
+  $('#redoWrong').addEventListener('click', startWrong);
+  $('#clearWrong').addEventListener('click', () => { if(confirm('确定清空错题本吗？')){ saveWrong([]); renderStats(); } });
+  $('#clearStats').addEventListener('click', () => { if(confirm('确定清空全部答题记录吗？')){ saveStats(freshStats()); renderStats(); } });
+}
+
+renderHome();
+</script>
+</body>
+</html>
