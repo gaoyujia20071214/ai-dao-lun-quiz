@@ -988,6 +988,7 @@ $('#homeBtn').addEventListener('click', renderHome);
 
 /* ---------- 首页 ---------- */
 function renderHome(){
+  clearTimeout(state.autoTimer);
   const wrong = getWrong(), st = getStats();
   const acc = st.all.a ? Math.round(st.all.c/st.all.a*100) : '—';
   const nChoice = Object.keys(DATA.chapters).reduce((n,ch)=>n+DATA.chapters[ch].choice.length,0);
@@ -1016,6 +1017,10 @@ function renderHome(){
         <div class="ic">🎲</div><div class="tt">随机抽题</div>
         <div class="ds">从选择、填空、判断中随机抽取练习</div>
       </button>
+      <button class="card" id="c-continuous">
+        <div class="ic">🔁</div><div class="tt">连续刷题</div>
+        <div class="ds">答完自动跳下一题，连续不间断刷题</div>
+      </button>
       <button class="card" id="c-exam">
         <div class="ic">⏱️</div><div class="tt">模拟考试</div>
         <div class="ds">${nChoice} 道选择题 · ${DATA.meta.examTime} 分钟限时 · 交卷自动评分</div>
@@ -1037,6 +1042,7 @@ function renderHome(){
   $('#c-fill').addEventListener('click', () => renderTypePicker('fill'));
   $('#c-judge').addEventListener('click', () => renderTypePicker('judge'));
   $('#c-random').addEventListener('click', renderRandomPicker);
+  $('#c-continuous').addEventListener('click', renderContinuousPicker);
   $('#c-exam').addEventListener('click', startExam);
   $('#c-wrong').addEventListener('click', startWrong);
   $('#c-browse').addEventListener('click', renderBrowse);
@@ -1079,13 +1085,56 @@ function renderRandomPicker(){
   $('#backHome2').addEventListener('click', renderHome);
 }
 
+function renderContinuousPicker(){
+  const chs = Object.keys(DATA.chapters);
+  $('#view-home').innerHTML = `
+    <div class="hero"><h1>连续刷题</h1><p>答完自动跳下一题 · 可随时退出 · 错题自动收录</p></div>
+    <div class="grid">
+      <button class="card" id="cont-all">
+        <div class="ic">🎯</div><div class="tt">全部题目（按章节）</div>
+        <div class="ds">${allObj.length} 道选择+填空+判断，顺序连续作答</div>
+      </button>
+      <button class="card" id="cont-shuffle">
+        <div class="ic">🔀</div><div class="tt">全部题目（乱序）</div>
+        <div class="ds">${allObj.length} 道题随机打乱后连续作答</div>
+      </button>
+      ${chs.map(ch => {
+        const t = DATA.chapters[ch].title;
+        const n = ['choice','fill','judge'].reduce((s,ty) => s + DATA.chapters[ch][ty].length, 0);
+        return `<button class="card" data-ch="${ch}">
+          <div class="ic">📚</div><div class="tt">第${ch}章 · ${esc(t)}</div>
+          <div class="ds">${n} 道选择+填空+判断连续作答</div>
+        </button>`;
+      }).join('')}
+      <button class="card" id="backHome3"><div class="ic">🏠</div><div class="tt">返回首页</div><div class="ds">取消选择</div></button>
+    </div>`;
+  $('#cont-all').addEventListener('click', () => startContinuous([...allObj], '连续刷题 · 全部顺序'));
+  $('#cont-shuffle').addEventListener('click', () => startContinuous([...allObj].sort(() => Math.random() - 0.5), '连续刷题 · 全部乱序'));
+  $$('#view-home .card[data-ch]').forEach(b => b.addEventListener('click', () => {
+    const ch = b.dataset.ch;
+    const queue = ['choice','fill','judge'].flatMap(t => DATA.chapters[ch][t].map(q => ({ ch, type:t, q })));
+    startContinuous(queue, `连续刷题 · 第${ch}章`);
+  }));
+  $('#backHome3').addEventListener('click', renderHome);
+}
+
 /* ---------- 答题核心 ---------- */
 const state = { mode:null, qtype:'choice', title:'', queue:[], idx:0, answered:{}, wrongMode:false,
-  exam:false, selected:{}, timerId:null, timeLeft:0, examDone:false, review:false, startTs:null };
+  exam:false, selected:{}, timerId:null, timeLeft:0, examDone:false, review:false, startTs:null,
+  continuous:false, autoTimer:null };
 
 function startQuiz(mode, type, title, queue){
+  clearTimeout(state.autoTimer);
   Object.assign(state, { mode, qtype:type, title, queue, idx:0, answered:{}, wrongMode: mode==='wrong',
-    exam:false, selected:{}, review:false, examDone:false });
+    exam:false, selected:{}, review:false, examDone:false, continuous:false });
+  renderQuiz();
+  show('view-quiz');
+}
+
+function startContinuous(queue, title){
+  clearTimeout(state.autoTimer);
+  Object.assign(state, { mode:'continuous', qtype:'mixed', title, queue, idx:0, answered:{}, wrongMode:false,
+    exam:false, selected:{}, review:false, examDone:false, continuous:true });
   renderQuiz();
   show('view-quiz');
 }
@@ -1106,7 +1155,7 @@ function startExam(){
   const queue = Object.keys(DATA.chapters).flatMap(ch =>
     DATA.chapters[ch].choice.map(q => ({ ch, type:'choice', q })));
   Object.assign(state, { mode:'exam', qtype:'choice', title:'模拟考试', queue, idx:0,
-    answered:{}, wrongMode:false, exam:true, selected:{}, review:false, examDone:false, startTs: Date.now() });
+    answered:{}, wrongMode:false, exam:true, selected:{}, review:false, examDone:false, startTs: Date.now(), continuous:false });
   state.timeLeft = DATA.meta.examTime * 60;
   clearInterval(state.timerId);
   state.timerId = setInterval(tick, 1000);
@@ -1132,6 +1181,7 @@ function correctOf(x, val){
 }
 
 function renderQuiz(){
+  clearTimeout(state.autoTimer);
   const x = cur();
   if(!x){
     if(state.exam) return submitExam(false);
@@ -1192,9 +1242,16 @@ function renderQuiz(){
     <div class="sheet">${state.queue.map((_, k) =>
       `<button class="${state.selected[k] !== undefined?'done':''}" data-go="${k}">${k+1}</button>`).join('')}</div>` : '';
 
+  const contScore = state.continuous ? (() => {
+    const done = state.queue.filter((_, k) => state.answered[k] !== undefined).length;
+    const ok = state.queue.filter((_, k) => state.answered[k] !== undefined && correctOf(state.queue[k], state.answered[k])).length;
+    return `<span class="tag">✅ ${ok} / ${done}</span>`;
+  })() : '';
+
   $('#view-quiz').innerHTML = `
     ${state.exam ? '' : `<div class="topbar">
       <span class="qt">${esc(state.title)} · ${i+1}/${total}</span>
+      ${contScore}
       <button class="btn" id="quitBtn">退出</button>
     </div>
     <div class="progress"><i style="width:${(i+1)/total*100}%"></i></div>`}
@@ -1214,7 +1271,7 @@ function renderQuiz(){
     </div>`;
 
   if(!state.exam){
-    $('#quitBtn').addEventListener('click', () => { clearInterval(state.timerId); renderHome(); });
+    $('#quitBtn').addEventListener('click', () => { clearInterval(state.timerId); clearTimeout(state.autoTimer); renderHome(); });
   }
   if(state.exam && !state.examDone){
     $('#submitBtn').addEventListener('click', () => {
@@ -1268,6 +1325,14 @@ function answer(k, val){
   if(ok && state.wrongMode) removeWrong(qId(x));
   else if(!ok) addWrong(qId(x));
   renderQuiz();
+  if(state.continuous){
+    clearTimeout(state.autoTimer);
+    if(state.idx < state.queue.length - 1){
+      state.autoTimer = setTimeout(() => { state.idx++; renderQuiz(); }, 1200);
+    } else {
+      state.autoTimer = setTimeout(() => { finishPractice(); }, 1200);
+    }
+  }
 }
 
 function optCls(i, letter){
@@ -1306,6 +1371,7 @@ function judgeCls(i, val){
 }
 
 function finishPractice(){
+  clearTimeout(state.autoTimer);
   const c = state.queue.filter((_, k) => correctOf(state.queue[k], state.answered[k])).length;
   const t = state.queue.length;
   alert(`本轮完成！答对 ${c} / ${t} 题（正确率 ${t?Math.round(c/t*100):0}%）。\n答错的题已收入错题本。`);
