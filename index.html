@@ -124,6 +124,7 @@ th{color:var(--muted);font-weight:600;font-size:13px}
 .winfo{flex:1;min-width:0}
 .wmeta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .tag.bad{color:var(--bad);background:var(--badbg)}
+.tag.good{color:var(--ok);background:var(--okbg)}
 .wstem{font-size:14.5px;font-weight:600;margin-bottom:4px}
 .wans{color:var(--muted);font-size:13px;margin-bottom:8px}
 .wrow{display:flex;gap:8px;flex-wrap:wrap}
@@ -1001,12 +1002,22 @@ function recordAnswer(ch, type, ok){
   s.type[type].a += 1; if(ok) s.type[type].c += 1;
   saveStats(s);
 }
+const MASTER_STREAK = 2;
 function addWrong(x){
   const id = qId(x);
   const w = getWrong();
   const now = Date.now();
-  if(w[id]){ w[id].count = (w[id].count || 1) + 1; w[id].last = now; }
-  else { w[id] = { ch:x.ch, type:x.type, num:x.q.num, count:1, first:now, last:now }; }
+  if(w[id]){ w[id].count = (w[id].count || 1) + 1; w[id].last = now; w[id].streak = 0; w[id].mastered = false; }
+  else { w[id] = { ch:x.ch, type:x.type, num:x.q.num, count:1, first:now, last:now, streak:0, mastered:false }; }
+  saveWrong(w);
+}
+function noteCorrect(x){
+  const id = qId(x);
+  const w = getWrong();
+  const e = w[id];
+  if(!e) return;
+  e.streak = (e.streak || 0) + 1;
+  if(e.streak >= MASTER_STREAK) e.mastered = true;
   saveWrong(w);
 }
 function removeWrong(id){ const w = getWrong(); delete w[id]; saveWrong(w); }
@@ -1179,7 +1190,7 @@ function startContinuous(queue, title){
 
 function startWrong(){
   const wrong = getWrong();
-  const ids = Object.keys(wrong);
+  const ids = Object.keys(wrong).filter(id => !wrong[id].mastered);
   if(!ids.length){ alert('错题本为空，先去刷题吧！'); return; }
   const queue = ids.map(id => {
     const e = wrong[id], [t, c, n] = id.split('-');
@@ -1223,6 +1234,7 @@ function renderWrongBook(){
     totalWrong += 1;
     freqSum += cnt;
   });
+  const masteredCount = ids.filter(id => w[id].mastered).length;
   const maxType = Math.max(1, ...Object.values(typeCount));
   const typeBars = ['choice','fill','judge'].map(t => {
     const n = typeCount[t] || 0;
@@ -1237,7 +1249,11 @@ function renderWrongBook(){
       <span class="vnum">${n}</span></div>`;
   }).join('');
 
-  const sorted = [...ids].sort((a,b) => (w[b].count || 1) - (w[a].count || 1));
+  const sorted = [...ids].sort((a,b) => {
+    const ma = w[a].mastered ? 1 : 0, mb = w[b].mastered ? 1 : 0;
+    if(ma !== mb) return ma - mb;
+    return (w[b].count || 1) - (w[a].count || 1);
+  });
   const items = sorted.map(id => {
     const e = w[id];
     const q = DATA.chapters[e.ch] && DATA.chapters[e.ch][e.type] ? DATA.chapters[e.ch][e.type].find(x => x.num===e.num) : null;
@@ -1246,7 +1262,7 @@ function renderWrongBook(){
     return `<div class="wrongitem">
       <label class="wcheck"><input type="checkbox" data-cb="${id}"></label>
       <div class="winfo">
-        <div class="wmeta"><span class="tag">${TYPES[e.type]}</span><span class="tag">第${e.ch}章</span><span class="tag bad">错 ${e.count || 1} 次</span></div>
+        <div class="wmeta"><span class="tag">${TYPES[e.type]}</span><span class="tag">第${e.ch}章</span>${e.mastered ? '<span class="tag good">✅ 已掌握</span>' : `<span class="tag bad">错 ${e.count || 1} 次</span>`}${(!e.mastered && (e.streak || 0) > 0) ? `<span class="tag">连续对 ${e.streak} 次</span>` : ''}</div>
         <div class="wstem">${esc(q.stem)}</div>
         <div class="wans">正确答案：${esc(ansTxt)}</div>
         <div class="wrow">
@@ -1259,7 +1275,7 @@ function renderWrongBook(){
 
   $('#view-wrong').innerHTML = `
     <div class="hero"><h1>错题本</h1>
-      <p>共 ${totalWrong} 道错题 · 累计错 ${freqSum} 次 · 答对不再自动消除，需手动清理</p>
+      <p>共 ${totalWrong} 道错题 · 未掌握 ${totalWrong - masteredCount} · 已掌握 ${masteredCount} · 累计错 ${freqSum} 次</p>
     </div>
     <div class="panel">
       <h3>📊 错题类型与章节分布</h3>
@@ -1267,8 +1283,9 @@ function renderWrongBook(){
       <div class="vsub" style="margin-top:12px">按章节（错题数）</div>${chBars}
     </div>
     <div class="row toolbar">
-      <button class="btn primary" id="redoAll">🔁 重做全部（${totalWrong}）</button>
+      <button class="btn primary" id="redoAll">🔁 重做全部（${totalWrong - masteredCount}）</button>
       <button class="btn" id="selAll">全选</button>
+      <button class="btn" id="clearMastered">清除已掌握（${masteredCount}）</button>
       <button class="btn danger" id="delSel">🗑 删除所选</button>
     </div>
     <div class="wronglist">${items}</div>`;
@@ -1280,6 +1297,13 @@ function renderWrongBook(){
     const check = sel.size !== all.length;
     $$('#view-wrong [data-cb]').forEach(cb => { cb.checked = check; if(check) sel.add(cb.dataset.cb); else sel.delete(cb.dataset.cb); });
     $('#selAll').textContent = check ? '取消全选' : '全选';
+  });
+  $('#clearMastered').addEventListener('click', () => {
+    const m = ids.filter(id => w[id].mastered);
+    if(!m.length){ alert('还没有已掌握的错题'); return; }
+    if(!confirm(`清除 ${m.length} 道已掌握的错题？`)) return;
+    const ww = getWrong(); m.forEach(id => delete ww[id]); saveWrong(ww);
+    renderWrongBook();
   });
   $$('#view-wrong [data-cb]').forEach(cb => cb.addEventListener('change', () => {
     if(cb.checked) sel.add(cb.dataset.cb); else sel.delete(cb.dataset.cb);
@@ -1471,6 +1495,7 @@ function answer(k, val){
   const ok = correctOf(x, val);
   recordAnswer(x.ch, x.type, ok);
   if(!ok) addWrong(x);
+  else noteCorrect(x);
   renderQuiz();
   if(state.continuous){
     clearTimeout(state.autoTimer);
