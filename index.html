@@ -162,7 +162,7 @@ th{color:var(--muted);font-weight:600;font-size:13px}
 
 const DATA = {
  "meta": {
-  "note": "本系统覆盖第1～6章，含选择题、填空题、判断题与思考题；选择题题干与选项依据原答案文件整理还原，第5、6章依据课程PPT整理；模拟考试为“第二场 · B卷”全真卷（选择15×3分＋填空5×2分＋判断10×2分＋简答3题共25分，满分100分）。如与教材有出入请以教材为准。",
+  "note": "本系统覆盖第1～6章，含选择题、填空题、判断题与思考题；选择题题干与选项依据原答案文件整理还原，第5、6章依据课程PPT整理；模拟考试为“第二场 · B卷”全真卷（选择15×3分＋填空5×2分＋判断10×2分＋简答3题共25分，满分100分）；另含「85%冲刺」独立模块（只依据《85%期末复习重点》命题，与章节题库分开）。如与教材有出入请以教材为准。",
   "examTime": 30
  },
  "chapters": {
@@ -1477,6 +1477,685 @@ const DATA = {
  }
 };
 
+const SPRINT = {
+ "note": "本模块只依据《85%期末复习重点》独立命题，与章节题库分开。",
+ "bank": {
+  "choice": [
+   {
+    "num": "1",
+    "stem": "图灵测试相关论文提出的年份是（　　）。",
+    "options": [
+     "A、1950年",
+     "B、1956年",
+     "C、2016年",
+     "D、2024年"
+    ],
+    "answer": "A",
+    "answerText": "1950年",
+    "analysis": "复习重点明确：1950年提出图灵测试相关论文，老师强调年份与测试核心思想；测试定义以课件为准。"
+   },
+   {
+    "num": "2",
+    "stem": "被视为人工智能作为研究领域形成过程中重要标志的会议是（　　）。",
+    "options": [
+     "A、1950年图灵测试相关论文发表",
+     "B、1956年达特茅斯会议",
+     "C、2016年AlphaGo击败李世石",
+     "D、2024年人工智能法律公约签署"
+    ],
+    "answer": "B",
+    "answerText": "1956年达特茅斯会议",
+    "analysis": "1956年达特茅斯会议是人工智能作为研究领域形成过程中的重要标志，选择题中不要与其他年代混淆。"
+   },
+   {
+    "num": "3",
+    "stem": "2016年AlphaGo击败围棋世界冠军李世石，这一事件体现的是（　　）。",
+    "options": [
+     "A、人工智能在复杂博弈任务上的重要进展",
+     "B、图灵测试首次被提出",
+     "C、人工智能法律公约的签署",
+     "D、人工智能研究进入资金低谷"
+    ],
+    "answer": "A",
+    "answerText": "人工智能在复杂博弈任务上的重要进展",
+    "analysis": "复习重点指出：该事件体现人工智能在复杂博弈任务上的重要进展，是人工智能发展史上的标志性事件。"
+   },
+   {
+    "num": "4",
+    "stem": "人工智能发展“三起两落”中的“两落”，通常指（　　）。",
+    "options": [
+     "A、两次学派更替",
+     "B、资金、预期或研究热度方面的低谷",
+     "C、两次芯片换代",
+     "D、两次算法标准更新"
+    ],
+    "answer": "B",
+    "answerText": "资金、预期或研究热度方面的低谷",
+    "analysis": "“三起两落”概括研究经历数次发展高潮与资金、预期或研究热度低谷的历史脉络；具体时间划分与原因需核对课件。"
+   },
+   {
+    "num": "5",
+    "stem": "人工智能通常划分的三大学派是（　　）。",
+    "options": [
+     "A、符号主义、连接主义、行为主义",
+     "B、监督学习、无监督学习、强化学习",
+     "C、算法、算力、数据",
+     "D、PGC、UGC、AIGC"
+    ],
+    "answer": "A",
+    "answerText": "符号主义、连接主义、行为主义",
+    "analysis": "按课程口径，三大学派为符号主义、连接主义、行为主义；录音未保留各学派基本思想的准确表述，具体思想需核对课件。"
+   },
+   {
+    "num": "6",
+    "stem": "大模型把不存在的信息说成真实事实，这类幻觉属于（　　）。",
+    "options": [
+     "A、事实性幻觉",
+     "B、忠实性幻觉",
+     "C、多模态幻觉",
+     "D、提示词幻觉"
+    ],
+    "answer": "A",
+    "answerText": "事实性幻觉",
+    "analysis": "事实性幻觉指生成内容与客观事实不符，辨别时看内容本身是否真实。"
+   },
+   {
+    "num": "7",
+    "stem": "模型生成内容偏离输入材料、指令或给定上下文，没有忠实执行任务要求，这类幻觉属于（　　）。",
+    "options": [
+     "A、事实性幻觉",
+     "B、忠实性幻觉",
+     "C、参数幻觉",
+     "D、训练幻觉"
+    ],
+    "answer": "B",
+    "answerText": "忠实性幻觉",
+    "analysis": "忠实性幻觉指生成内容偏离输入材料、指令或给定上下文，辨别时看是否忠于输入和指令。"
+   },
+   {
+    "num": "8",
+    "stem": "零样本学习与少样本学习的主要区别在于（　　）。",
+    "options": [
+     "A、是否给出示例",
+     "B、是否使用独立显卡",
+     "C、是否支持多模态",
+     "D、是否需要联网"
+    ],
+    "answer": "A",
+    "answerText": "是否给出示例",
+    "analysis": "零样本学习不给出具体示例，直接要求模型完成任务；少样本学习提供少量示例让模型参考。"
+   },
+   {
+    "num": "9",
+    "stem": "大语言模型与多模态大模型的主要区别在于（　　）。",
+    "options": [
+     "A、大语言模型侧重语言理解与生成，多模态大模型涉及文本、图像、音频、视频等不同模态的处理或生成",
+     "B、大语言模型无法训练，多模态大模型可以训练",
+     "C、多模态大模型只能处理文本",
+     "D、二者没有区别"
+    ],
+    "answer": "A",
+    "answerText": "大语言模型侧重语言理解与生成，多模态大模型涉及文本、图像、音频、视频等不同模态的处理或生成",
+    "analysis": "复习重点：大语言模型侧重语言理解与生成等任务，多模态大模型涉及文本、图像、音频、视频等不同模态的信息处理或生成；精确表述以课件为准。"
+   },
+   {
+    "num": "10",
+    "stem": "人工智能发展的三大核心驱动力（“三驾马车”）是（　　）。",
+    "options": [
+     "A、算法、算力、数据",
+     "B、算法、带宽、存储",
+     "C、数据、网络、芯片",
+     "D、算力、模型、用户"
+    ],
+    "answer": "A",
+    "answerText": "算法、算力、数据",
+    "analysis": "算法、算力、数据被称为人工智能发展的三大要素或“三驾马车”：算法是方法与模型设计，算力是训练与运行所需的计算能力，数据是训练、验证或支撑模型任务的信息。"
+   },
+   {
+    "num": "11",
+    "stem": "大语言模型的核心价值在于（　　）。",
+    "options": [
+     "A、理解语言、生成语言、运用语言",
+     "B、存储语言、压缩语言、翻译语言",
+     "C、识别语言、标注语言、统计语言",
+     "D、加密语言、解密语言、校验语言"
+    ],
+    "answer": "A",
+    "answerText": "理解语言、生成语言、运用语言",
+    "analysis": "复习重点：大语言模型的核心价值在于理解语言、生成语言和运用语言。"
+   },
+   {
+    "num": "12",
+    "stem": "据复习重点，AI赋能创意产业共有（　　）大价值。",
+    "options": [
+     "A、两",
+     "B、三",
+     "C、四",
+     "D、七"
+    ],
+    "answer": "B",
+    "answerText": "三",
+    "analysis": "老师明确要求列举三大价值，但录音没有可靠保留三个价值的准确名称与解释，具体内容需核对课件。"
+   },
+   {
+    "num": "13",
+    "stem": "据复习重点，智能视频摘要生成的流程共有（　　）个步骤。",
+    "options": [
+     "A、两",
+     "B、三",
+     "C、四",
+     "D、七"
+    ],
+    "answer": "C",
+    "answerText": "四",
+    "analysis": "老师明确说流程一共四点，并提醒不要记成两三点；四步的名称与顺序需按PPT补齐。"
+   },
+   {
+    "num": "14",
+    "stem": "据复习重点，文、声、图提示词共有（　　）大要点。",
+    "options": [
+     "A、三",
+     "B、四",
+     "C、七",
+     "D、十"
+    ],
+    "answer": "C",
+    "answerText": "七",
+    "analysis": "老师明确说共有七大要点，注意数量必须为七项，不要合并或遗漏；七项原文需核对课件。"
+   },
+   {
+    "num": "15",
+    "stem": "据复习重点，第四章大模型有（　　）大基础能力。",
+    "options": [
+     "A、两",
+     "B、三",
+     "C、四",
+     "D、七"
+    ],
+    "answer": "C",
+    "answerText": "四",
+    "analysis": "老师要求记忆“四大基础能力”，但转写没有给出四项完整名称，需按第四章PPT逐项补齐，不要只写常见能力。"
+   },
+   {
+    "num": "16",
+    "stem": "据复习重点，生成式AI有（　　）大核心价值。",
+    "options": [
+     "A、三",
+     "B、四",
+     "C、七",
+     "D、九"
+    ],
+    "answer": "B",
+    "answerText": "四",
+    "analysis": "生成式AI是四大核心价值，与第三章“AI赋能创意产业的三大价值”属于不同题目、数量不同，不能混背；四项名称未完整保留，需核对课件。"
+   },
+   {
+    "num": "17",
+    "stem": "提示词（Prompt）是指（　　）。",
+    "options": [
+     "A、用户为模型提供的任务指令、背景信息、输入材料和输出要求等内容，用于引导模型理解任务并生成相应结果",
+     "B、模型训练时使用的大规模标注数据集",
+     "C、模型的参数规模与层数配置",
+     "D、模型推理时的显存占用方案"
+    ],
+    "answer": "A",
+    "answerText": "用户为模型提供的任务指令、背景信息、输入材料和输出要求等内容，用于引导模型理解任务并生成相应结果",
+    "analysis": "复习重点把提示词定义为：用户为模型提供的任务指令、背景信息、输入材料和输出要求等内容，用来引导模型理解任务并生成相应结果；若课件有指定定义，优先背课件原文。"
+   }
+  ],
+  "fill": [
+   {
+    "num": "1",
+    "stem": "图灵测试相关论文提出的年份是____年。",
+    "answer": "1950",
+    "analysis": "复习重点速记：1950—图灵测试；1956—达特茅斯会议；2016—AlphaGo击败李世石。"
+   },
+   {
+    "num": "2",
+    "stem": "1956年召开的____会议，被视为人工智能作为研究领域形成过程中的重要标志。",
+    "answer": "达特茅斯",
+    "analysis": "达特茅斯会议是人工智能作为研究领域形成过程中的重要标志。"
+   },
+   {
+    "num": "3",
+    "stem": "2016年，AlphaGo击败围棋世界冠军____。",
+    "answer": "李世石",
+    "analysis": "该事件体现人工智能在复杂博弈任务上的重要进展。"
+   },
+   {
+    "num": "4",
+    "stem": "大模型幻觉分为事实性幻觉和____幻觉两种类型。",
+    "answer": "忠实性",
+    "analysis": "事实性幻觉看内容是否符合客观事实；忠实性幻觉看是否忠于输入、上下文或指令。"
+   },
+   {
+    "num": "5",
+    "stem": "零样本学习不给出具体示例，少样本学习则提供____示例。",
+    "answer": "少量",
+    "analysis": "零样本＝零个示例；少样本＝给少量示例。"
+   },
+   {
+    "num": "6",
+    "stem": "Markdown是一种轻量级____语言，语法简洁、易读易写，属于纯文本格式。",
+    "answer": "标记",
+    "analysis": "Markdown：轻量级标记语言＋语法简洁、易读易写＋纯文本格式。"
+   },
+   {
+    "num": "7",
+    "stem": "机器翻译是利用计算机将一种自然语言文本____转换为另一种自然语言文本的过程。",
+    "answer": "自动",
+    "analysis": "关键词：利用计算机、一种自然语言文本、自动转换、另一种自然语言文本。"
+   },
+   {
+    "num": "8",
+    "stem": "数据分析是对大量有序或无序的数据进行信息整合、提取和____等操作，并总结数据的内在规律。",
+    "answer": "展示",
+    "analysis": "按复习重点通顺整理：信息整合、提取、展示，提取有用信息并总结内在规律；若PPT原文不同以PPT为准。"
+   },
+   {
+    "num": "9",
+    "stem": "数据采集是利用装置从____获取数据并输入系统的过程。",
+    "answer": "外部",
+    "analysis": "关键词：利用装置、从外部获取、输入系统、应用领域。"
+   },
+   {
+    "num": "10",
+    "stem": "摄像头可以采集图像数据，麦克风可以采集____数据。",
+    "answer": "声音",
+    "analysis": "复习重点给出的两个设备例子：摄像头采集图像，麦克风采集声音。"
+   },
+   {
+    "num": "11",
+    "stem": "生成式AI的四大核心特点是原创性与自主性、自然性与普惠性、多模态统一生成和____。",
+    "answer": "泛化能力强",
+    "analysis": "考试列举题优先写老师给出的四个名称：原创性与自主性、自然性与普惠性、多模态统一生成、泛化能力强。"
+   },
+   {
+    "num": "12",
+    "stem": "人工智能的三大核心驱动力是算法、算力和____。",
+    "answer": "数据",
+    "analysis": "三大驱动力：算法、算力、数据，老师称其为“三驾马车”。"
+   },
+   {
+    "num": "13",
+    "stem": "提示词是用户为模型提供的任务指令、背景信息、输入材料和____等内容，用来引导模型理解任务并生成相应结果。",
+    "answer": "输出要求",
+    "analysis": "提示词的作用：明确任务目标、提供必要上下文、约束输出格式与风格、减少歧义、提高结果与需求的匹配度。"
+   }
+  ],
+  "judge": [
+   {
+    "num": "1",
+    "stem": "图灵测试相关论文于1950年提出。",
+    "answer": true,
+    "analysis": "复习重点速记：1950—图灵测试；1956—达特茅斯会议；2016—AlphaGo击败李世石。"
+   },
+   {
+    "num": "2",
+    "stem": "达特茅斯会议于1956年召开，被视为人工智能作为研究领域形成过程中的重要标志。",
+    "answer": true,
+    "analysis": "年份与意义按复习重点记忆，不要与其他年代混淆。"
+   },
+   {
+    "num": "3",
+    "stem": "达特茅斯会议于1950年召开。",
+    "answer": false,
+    "analysis": "1950年是图灵测试相关论文提出的年份，达特茅斯会议在1956年。"
+   },
+   {
+    "num": "4",
+    "stem": "2016年，AlphaGo击败围棋世界冠军李世石。",
+    "answer": true
+   },
+   {
+    "num": "5",
+    "stem": "2016年AlphaGo击败李世石只是一场棋类比赛，与人工智能发展史没有关系。",
+    "answer": false,
+    "analysis": "复习重点指出该事件体现人工智能在复杂博弈任务上的重要进展，是发展史上的标志性事件。"
+   },
+   {
+    "num": "6",
+    "stem": "“三起两落”通常用来概括人工智能研究经历数次发展高潮与资金、预期或研究热度低谷的历史脉络。",
+    "answer": true,
+    "analysis": "三次高潮与两次低谷的具体名称、时间和原因需核对课件，不要用网上版本替代课程口径。"
+   },
+   {
+    "num": "7",
+    "stem": "人工智能通常划分为符号主义、连接主义和行为主义三大学派。",
+    "answer": true,
+    "analysis": "三大学派名称按课程口径记忆；各学派基本思想需核对课件。"
+   },
+   {
+    "num": "8",
+    "stem": "人工智能通常划分为符号主义、连接主义和强化学习三大学派。",
+    "answer": false,
+    "analysis": "三大学派为符号主义、连接主义、行为主义；强化学习属于机器学习方式，不是学派分类。"
+   },
+   {
+    "num": "9",
+    "stem": "大模型幻觉包括事实性幻觉与忠实性幻觉两种类型。",
+    "answer": true,
+    "analysis": "事实性幻觉看内容是否符合客观事实，忠实性幻觉看是否忠于输入与指令。"
+   },
+   {
+    "num": "10",
+    "stem": "事实性幻觉是指生成内容没有忠实于输入材料、指令或给定上下文。",
+    "answer": false,
+    "analysis": "这是忠实性幻觉的定义；事实性幻觉指生成内容与客观事实不符。"
+   },
+   {
+    "num": "11",
+    "stem": "忠实性幻觉是指生成内容偏离输入材料、指令或给定上下文，没有忠实执行任务要求。",
+    "answer": true
+   },
+   {
+    "num": "12",
+    "stem": "零样本学习不给出具体示例，直接要求模型完成任务；少样本学习会提供少量示例供模型参考。",
+    "answer": true
+   },
+   {
+    "num": "13",
+    "stem": "少样本学习不给出任何示例，直接要求模型完成任务。",
+    "answer": false,
+    "analysis": "少样本学习会提供少量示例；不给出示例的是零样本学习。"
+   },
+   {
+    "num": "14",
+    "stem": "大语言模型是基于Transformer架构、通过大规模文本数据预训练而成的生成式模型。",
+    "answer": true,
+    "analysis": "架构Transformer、训练方式大规模文本数据预训练、类型生成式模型。"
+   },
+   {
+    "num": "15",
+    "stem": "大语言模型是基于循环神经网络架构、通过小规模文本数据训练而成的生成式模型。",
+    "answer": false,
+    "analysis": "大语言模型的架构是Transformer，训练方式是大规模文本数据预训练。"
+   },
+   {
+    "num": "16",
+    "stem": "Markdown是一种语法简洁、易读易写的轻量级标记语言，属于纯文本格式。",
+    "answer": true
+   },
+   {
+    "num": "17",
+    "stem": "Markdown是一种二进制文档格式，必须经过专用软件编译才能阅读。",
+    "answer": false,
+    "analysis": "Markdown是纯文本格式的轻量级标记语言，语法简洁、易读易写。"
+   },
+   {
+    "num": "18",
+    "stem": "机器翻译是利用计算机将一种自然语言文本自动转换为另一种自然语言文本的过程。",
+    "answer": true
+   },
+   {
+    "num": "19",
+    "stem": "机器翻译是指把一种自然语言文本自动转换为计算机编程语言的过程。",
+    "answer": false,
+    "analysis": "机器翻译的目标语言是另一种自然语言文本，不是编程语言。"
+   },
+   {
+    "num": "20",
+    "stem": "数据分析是对大量有序或无序的数据进行信息整合、提取和展示等操作，并总结数据的内在规律。",
+    "answer": true
+   },
+   {
+    "num": "21",
+    "stem": "数据分析是指利用装置从外部获取数据并输入系统的过程。",
+    "answer": false,
+    "analysis": "这是数据采集的定义；数据分析负责整理、提取信息并总结规律。"
+   },
+   {
+    "num": "22",
+    "stem": "数据采集是利用装置从外部获取数据并输入系统的过程，摄像头和麦克风都是常见的数据采集设备。",
+    "answer": true,
+    "analysis": "摄像头采集图像，麦克风采集声音。"
+   },
+   {
+    "num": "23",
+    "stem": "数据采集负责整理、提取信息并总结规律，数据分析负责从外部获取数据并输入系统。",
+    "answer": false,
+    "analysis": "两者正好相反：数据采集负责从外部获取数据并输入系统，数据分析负责整理、提取信息并总结规律。"
+   },
+   {
+    "num": "24",
+    "stem": "生成式人工智能通过算法模型自主学习数据规律，生成符合逻辑和具体场景的文本、图像、音频、视频、代码等原创内容。",
+    "answer": true
+   },
+   {
+    "num": "25",
+    "stem": "生成式人工智能只能对已有内容进行分类和判断，不能生成新的原创内容。",
+    "answer": false,
+    "analysis": "那是判别式AI的能力；生成式AI能生成新的原创内容。"
+   },
+   {
+    "num": "26",
+    "stem": "大语言模型的核心价值在于理解语言、生成语言和运用语言。",
+    "answer": true
+   },
+   {
+    "num": "27",
+    "stem": "人工智能的三大核心驱动力是算法、算力和带宽。",
+    "answer": false,
+    "analysis": "三大驱动力是算法、算力、数据。"
+   },
+   {
+    "num": "28",
+    "stem": "人工智能的三大核心驱动力是算法、算力、数据，通常被称为“三驾马车”。",
+    "answer": true
+   },
+   {
+    "num": "29",
+    "stem": "据复习重点，智能视频摘要生成的流程共两个步骤。",
+    "answer": false,
+    "analysis": "资料明确为四个步骤，老师还提醒不要记成两三点。"
+   },
+   {
+    "num": "30",
+    "stem": "据复习重点，文、声、图提示词共有七大要点。",
+    "answer": true,
+    "analysis": "七项具体内容需核对课件，数量必须为七项。"
+   },
+   {
+    "num": "31",
+    "stem": "据复习重点，AI赋能创意产业有三大价值，而生成式AI有四大核心价值，两者数量不同、不能混背。",
+    "answer": true
+   },
+   {
+    "num": "32",
+    "stem": "据复习重点，大模型有三大基础能力。",
+    "answer": false,
+    "analysis": "资料明确为四大基础能力；四项名称需核对课件。"
+   },
+   {
+    "num": "33",
+    "stem": "提示词是用户为模型提供的任务指令、背景信息、输入材料和输出要求等内容，用来引导模型理解任务并生成相应结果。",
+    "answer": true,
+    "analysis": "提示词的作用：明确任务目标、提供必要上下文、约束输出格式与风格、减少歧义、提高结果与需求的匹配度；如课件有指定定义以课件为准。"
+   },
+   {
+    "num": "34",
+    "stem": "提示词是模型在训练过程中自动生成的参数集合，与用户输入无关。",
+    "answer": false,
+    "analysis": "提示词是用户提供给模型的内容（任务指令、背景信息、输入材料、输出要求），不是模型自动生成的参数。"
+   },
+   {
+    "num": "35",
+    "stem": "生成式AI的四大核心特点包括原创性与自主性、自然性与普惠性、多模态统一生成和泛化能力强。",
+    "answer": true
+   },
+   {
+    "num": "36",
+    "stem": "生成式AI的四大核心特点是算法、算力、数据和多模态统一生成。",
+    "answer": false,
+    "analysis": "算法、算力、数据是人工智能的三大核心驱动力，不是生成式AI的四大特点；四大特点是原创性与自主性、自然性与普惠性、多模态统一生成、泛化能力强。"
+   }
+  ],
+  "subjective": [
+   {
+    "num": "1",
+    "q": "图灵测试相关论文提出的年份是什么？请简述图灵测试的核心思想。（核心思想以课件定义为准）",
+    "a": "年份：1950年。核心思想（常见理解，考试以课件定义为准）：通过与机器对话，判断机器的表现是否难以与人类区分。复习重点提示：老师强调年份和测试核心思想，若课件给出指定定义，请优先背课件原文。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "2",
+    "q": "达特茅斯会议是哪一年？它在人工智能发展史上有什么意义？",
+    "a": "1956年。它是人工智能作为研究领域形成过程中的重要标志；选择题中不要与其他年代混淆。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "3",
+    "q": "2016年AlphaGo击败围棋世界冠军李世石，这一事件说明了什么？",
+    "a": "它体现人工智能在复杂博弈任务上的重要进展，是人工智能发展史上的标志性事件。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "4",
+    "q": "写出人工智能发展的“三起两落”。（需核对课件）",
+    "a": "资料可确认的内容：“三起两落”通常指人工智能研究经历数次发展高潮与资金、预期或研究热度低谷的历史脉络。三次高潮与两次低谷的具体名称、时间与原因因教材口径不同而不同，需从第一章PPT抄写老师使用的版本，不要用网上版本替代课程口径。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "5",
+    "q": "写出人工智能三大学派及其主要思想。（需核对课件）",
+    "a": "按课程口径，三大学派为符号主义、连接主义、行为主义。录音没有清晰保留三个学派的名称与基本思想，各学派的主要思想需按PPT原始分类背诵并核对，不要把通用教材的分类直接当标准答案。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "6",
+    "q": "大模型幻觉分为哪两种？分别如何区分？",
+    "a": "分为事实性幻觉与忠实性幻觉。事实性幻觉：生成内容与客观事实不符，例如把不存在的信息说成真实事实，辨别时看内容本身是否真实。忠实性幻觉：生成内容偏离输入材料、指令或给定上下文，没有忠实执行任务要求，辨别时看是否忠于输入和指令。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "7",
+    "q": "什么是零样本学习？什么是少样本学习？二者区别是什么？",
+    "a": "零样本学习（Zero-shot）：不给出具体示例，直接要求模型完成任务，即“零样本＝零个示例”。少样本学习（Few-shot）：提供少量示例，让模型参考示例完成任务，即“少样本＝给少量示例”。区别：是否在提示中给出示例。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "8",
+    "q": "什么是Markdown？请从“是什么—语法特点—格式特点”三方面作答。",
+    "a": "Markdown是一种轻量级标记语言；语法简洁、易读易写；属于纯文本格式。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "9",
+    "q": "什么是机器翻译？",
+    "a": "机器翻译是利用计算机将一种自然语言文本自动转换为另一种自然语言文本的过程。答题时尽量保留完整逻辑，关键词：利用计算机、一种自然语言文本、自动转换、另一种自然语言文本，不要只写“把一种语言翻译成另一种语言”。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "10",
+    "q": "什么是数据分析？什么是数据采集？请举出两个数据采集设备例子，并说明两者的区别。",
+    "a": "数据分析：对大量有序或无序的数据进行信息整合、提取和展示等操作，通过这些操作提取有用信息，并总结数据的内在规律。数据采集：利用装置从外部获取数据并输入系统的过程。设备例子：摄像头采集图像数据、麦克风采集声音数据。区别：数据采集负责从外部获取数据并输入系统；数据分析负责整理、提取信息并总结规律。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "11",
+    "q": "写出智能视频摘要生成的四个流程步骤。（需核对课件）",
+    "a": "资料只明确该流程共四个步骤，并提醒不要记成两三点，但转写没有保留四步的具体名称与顺序，不能凭空猜测。请按PPT原始顺序抄写四步，并记住每一步的关键词。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "12",
+    "q": "写出文、声、图提示词的七大要点。（需核对课件）",
+    "a": "资料只明确共有七大要点，且数量必须为七项、不能合并或遗漏，但转写未保留七项原文。请按课件原词逐条补齐七项。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "13",
+    "q": "什么是生成式人工智能？请按“方法—学习—生成要求—内容类型”四块说明。",
+    "a": "生成式人工智能是通过算法模型自主学习数据规律，进而生成符合逻辑和具体场景的文本、图像、音频、视频、代码等多种原创内容的技术。①方法：通过算法模型；②学习：自主学习数据规律；③生成要求：符合逻辑和具体场景；④内容类型：文本、图像、音频、视频、代码等原创内容。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "14",
+    "q": "写出生成式AI的四大核心特点。",
+    "a": "原创性与自主性、自然性与普惠性、多模态统一生成、泛化能力强。考试列举题优先写老师给出的这四个名称。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "15",
+    "q": "什么是大语言模型？它的核心价值是什么？",
+    "a": "大语言模型是基于Transformer架构构建、通过大规模文本数据预训练而成的生成式模型。其核心价值在于理解语言、生成语言和运用语言。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "16",
+    "q": "写出人工智能的三大核心驱动力，并各用一句话解释。",
+    "a": "算法、算力、数据（老师称其为人工智能发展的三大要素或“三驾马车”）。算法：解决问题的方法与模型设计；算力：训练和运行模型所需的计算能力；数据：用于训练、验证或支撑模型任务的信息。",
+    "pts": 10,
+    "needCheck": false
+   },
+   {
+    "num": "17",
+    "q": "写出第四章大模型的四大基础能力。（需核对课件）",
+    "a": "资料只明确为“四大基础能力”、共四项，但转写没有给出四项完整名称。请按第四章PPT逐项补齐，注意列举题不能只写自己认为常见的四种能力。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "18",
+    "q": "写出生成式AI的四大核心价值，并说明它与第三章“三大价值”的关系。（需核对课件）",
+    "a": "生成式AI为四大核心价值，共四项；第三章AI赋能创意产业为三大价值，共三项。二者属于不同题目、数量不同，不能混背。四项具体名称需在老师展示的PPT中核对，不能与第三章“AI赋能创意产业的三大价值”混淆。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "19",
+    "q": "写出数据分析的完整流程。（需核对课件）",
+    "a": "老师明确把“数据分析的整个流程”列为考点，但转写没有逐步说出完整流程。请对照课堂PPT记住每一步的名称和顺序，自测时遮住答案从第一步写到最后一步；只记住零散环节不算掌握。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "20",
+    "q": "写出AI赋能创意产业的三大价值。（需核对课件）",
+    "a": "资料只明确共有三大价值，需按“价值名称＋一句解释”的格式记忆；转写没有可靠保留三项的准确名称与解释，请到PPT对应页补齐。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "21",
+    "q": "AI创造音频的底层技术是什么？（需核对课件）",
+    "a": "该考点由老师单独点名，但转写无法可靠还原具体技术名称或技术路线，不宜猜测；需根据课件掌握底层技术（或技术路线）名称及其基本作用。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "22",
+    "q": "AI生成视频的核心意义是什么？（需核对课件）",
+    "a": "老师要求掌握AI生成视频的核心意义，资料未保留课件标准表述。请先核对课件标准答案，再理解其与视频制作效率、创作门槛和内容生产方式的关系；通用解释不能替代课件指定答案。（需核对课件）",
+    "pts": 10,
+    "needCheck": true
+   },
+   {
+    "num": "23",
+    "q": "什么是提示词？它有哪些作用？",
+    "a": "提示词（Prompt）是用户为模型提供的任务指令、背景信息、输入材料和输出要求等内容，用来引导模型理解任务并生成相应结果（此处为便于理解的整理表述，如课件有指定定义，优先背课件原文）。作用：明确任务目标、提供必要上下文、约束输出格式与风格、减少歧义、提高结果与需求的匹配度。",
+    "pts": 10,
+    "needCheck": false
+   }
+  ]
+ }
+};
+
 /* ---------- 工具 ---------- */
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
@@ -1578,11 +2257,12 @@ function renderHome(){
   const nFill = chs.reduce((n,ch)=>n+DATA.chapters[ch].fill.length,0);
   const nJudge = chs.reduce((n,ch)=>n+DATA.chapters[ch].judge.length,0);
   const nSubj = chs.reduce((n,ch)=>n+DATA.chapters[ch].subjective.length,0);
+  const nSprint = OBJ_TYPES.reduce((s,t)=> s + SPRINT.bank[t].length, 0) + SPRINT.bank.subjective.length;
   const examMax = EXAM.blocks.reduce((s,b)=> s + (Array.isArray(b.pts) ? b.pts.reduce((a,c)=>a+c,0) : b.pts*b.n), 0);
   $('#view-home').innerHTML = `
     <div class="hero">
       <h1>人工智能导论（第2版）习题练习系统</h1>
-      <p>第1～6章 · ${nChoice} 道选择题 · ${nFill} 道填空题 · ${nJudge} 道判断题 · ${nSubj} 道思考题 · 离线可用</p>
+      <p>第1～6章 · ${nChoice} 道选择题 · ${nFill} 道填空题 · ${nJudge} 道判断题 · ${nSubj} 道思考题 · 85%冲刺专项 · 离线可用</p>
     </div>
     <div class="notebox">📌 ${esc(DATA.meta.note)}</div>
     <div class="grid">
@@ -1610,6 +2290,10 @@ function renderHome(){
         <div class="ic">⏱️</div><div class="tt">模拟考试 · 第二场 B卷</div>
         <div class="ds">15 选择 + 5 填空 + 10 判断 + 3 简答 · 满分 ${examMax} 分 · ${EXAM.minutes} 分钟限时</div>
       </button>
+      <button class="card" id="c-sprint">
+        <div class="ic">🎯</div><div class="tt">85%冲刺</div>
+        <div class="ds">依据《85%期末复习重点》独立命题 · ${nSprint} 题 · 选择/填空/判断/简答 · 独立题库</div>
+      </button>
       <button class="card" id="c-wrong">
         <div class="ic">📕</div><div class="tt">错题本</div>
         <div class="ds">集中查看与清理错题，答对不再自动消除${wrongCount ? `<span class="badge">${wrongCount} 题</span>` : ''}</div>
@@ -1629,6 +2313,7 @@ function renderHome(){
   $('#c-random').addEventListener('click', renderRandomPicker);
   $('#c-continuous').addEventListener('click', renderContinuousPicker);
   $('#c-exam').addEventListener('click', startExam);
+  $('#c-sprint').addEventListener('click', renderSprintPicker);
   $('#c-wrong').addEventListener('click', renderWrongBook);
   $('#c-browse').addEventListener('click', renderBrowse);
   $('#c-stats').addEventListener('click', renderStats);
@@ -1706,12 +2391,13 @@ function renderContinuousPicker(){
 /* ---------- 答题核心 ---------- */
 const state = { mode:null, qtype:'choice', title:'', queue:[], idx:0, answered:{}, wrongMode:false,
   exam:false, selected:{}, selfScores:{}, timerId:null, timeLeft:0, examDone:false, review:false,
-  startTs:null, continuous:false, autoTimer:null, examResult:null };
+  startTs:null, continuous:false, autoTimer:null, examResult:null, sprint:false, sprintSelf:{} };
 
 function startQuiz(mode, type, title, queue){
   clearTimeout(state.autoTimer);
   Object.assign(state, { mode, qtype:type, title, queue, idx:0, answered:{}, wrongMode: mode==='wrong',
-    exam:false, selected:{}, selfScores:{}, review:false, examDone:false, continuous:false, examResult:null });
+    exam:false, selected:{}, selfScores:{}, review:false, examDone:false, continuous:false, examResult:null,
+    sprint:false, sprintSelf:{} });
   renderQuiz();
   show('view-quiz');
 }
@@ -1719,9 +2405,80 @@ function startQuiz(mode, type, title, queue){
 function startContinuous(queue, title){
   clearTimeout(state.autoTimer);
   Object.assign(state, { mode:'continuous', qtype:'mixed', title, queue, idx:0, answered:{}, wrongMode:false,
-    exam:false, selected:{}, selfScores:{}, review:false, examDone:false, continuous:true, examResult:null });
+    exam:false, selected:{}, selfScores:{}, review:false, examDone:false, continuous:true, examResult:null,
+    sprint:false, sprintSelf:{} });
   renderQuiz();
   show('view-quiz');
+}
+
+/* ---------- 85%冲刺（独立题库，不写入章节统计与错题本） ---------- */
+function renderSprintPicker(){
+  clearTimeout(state.autoTimer);
+  const n = t => SPRINT.bank[t].length;
+  const total = OBJ_TYPES.reduce((s,t) => s + n(t), 0) + n('subjective');
+  const needCheck = SPRINT.bank.subjective.filter(q => q.needCheck).length
+    + SPRINT.bank.choice.filter(q => /需核对课件/.test(q.analysis || '')).length
+    + SPRINT.bank.judge.filter(q => /需核对课件/.test(q.analysis || '')).length;
+  $('#view-home').innerHTML = `
+    <div class="hero"><h1>85%冲刺</h1><p>只依据《85%期末复习重点》独立命题 · 共 ${total} 题 · 独立题库，不混入章节题库</p></div>
+    <div class="notebox">📌 资料中标注“需核对课件”且未给出具体名称/答案的考点，本模块只考“数量/概念”，需要具体答案的题目已在题干或参考答案中标注“（需核对课件）”，不编造名称。</div>
+    <div class="grid">
+      <button class="card" data-st="choice"><div class="ic">📖</div><div class="tt">选择题冲刺</div>
+        <div class="ds">${n('choice')} 道 · 年份、定义、辨析与数量题，选完立即判分</div></button>
+      <button class="card" data-st="fill"><div class="ic">✏️</div><div class="tt">填空题冲刺</div>
+        <div class="ds">${n('fill')} 道 · 关键词与年份记忆，输入后立即判分</div></button>
+      <button class="card" data-st="judge"><div class="ic">⚖️</div><div class="tt">判断题冲刺</div>
+        <div class="ds">${n('judge')} 道 · 自然陈述句辨真伪，选择正确或错误</div></button>
+      <button class="card" data-st="subjective"><div class="ic">📝</div><div class="tt">简答自评</div>
+        <div class="ds">${n('subjective')} 道 · 先作答再看参考答案，自评得分</div></button>
+      <button class="card" id="st-all"><div class="ic">🎯</div><div class="tt">整套冲刺</div>
+        <div class="ds">${total} 道 · 按选择→填空→判断→简答顺序一次刷完</div></button>
+      <button class="card" id="st-back"><div class="ic">🏠</div><div class="tt">返回首页</div><div class="ds">退出 85%冲刺</div></button>
+    </div>`;
+  $$('#view-home .card[data-st]').forEach(b => b.addEventListener('click', () => {
+    const t = b.dataset.st;
+    const queue = SPRINT.bank[t].map(q => ({ ch:'S', type:t, q }));
+    startSprint(queue, `85%冲刺 · ${TYPES[t] === '思考题' ? '简答自评' : TYPES[t]}`);
+  }));
+  $('#st-all').addEventListener('click', () => {
+    const queue = [];
+    OBJ_TYPES.forEach(t => SPRINT.bank[t].forEach(q => queue.push({ ch:'S', type:t, q })));
+    SPRINT.bank.subjective.forEach(q => queue.push({ ch:'S', type:'subjective', q, pts:q.pts || 10 }));
+    startSprint(queue, '85%冲刺 · 整套');
+  });
+  $('#st-back').addEventListener('click', renderHome);
+  show('view-home');
+}
+
+function startSprint(queue, title){
+  clearTimeout(state.autoTimer);
+  clearInterval(state.timerId);
+  Object.assign(state, { mode:'sprint', qtype:'mixed', title, queue, idx:0, answered:{}, wrongMode:false,
+    exam:false, selected:{}, selfScores:{}, review:false, examDone:false, continuous:false,
+    examResult:null, sprint:true, sprintSelf:{} });
+  renderQuiz();
+  show('view-quiz');
+}
+
+function finishSprint(){
+  clearTimeout(state.autoTimer);
+  let objTotal = 0, objDone = 0, objOk = 0, subjTotal = 0, subjSelf = 0, needCheck = 0;
+  state.queue.forEach((x, k) => {
+    if(x.type === 'subjective'){
+      subjTotal += (x.pts || x.q.pts || 10);
+      subjSelf += (state.sprintSelf[k] || 0);
+      if(x.q.needCheck) needCheck += 1;
+    } else {
+      objTotal += 1;
+      if(state.answered[k] !== undefined){
+        objDone += 1;
+        if(correctOf(x, state.answered[k])) objOk += 1;
+      }
+    }
+  });
+  const subjLine = subjTotal ? `\n简答自评：${subjSelf} / ${subjTotal} 分${needCheck ? `（其中 ${needCheck} 题需核对课件）` : ''}` : '';
+  alert(`「85%冲刺」本轮完成！\n客观题：答对 ${objOk} / ${objTotal} 题（已作答 ${objDone} 题）${subjLine}\n模块独立：不写入章节统计与错题本，可随时重刷。`);
+  renderSprintPicker();
 }
 
 function startWrong(){
@@ -1886,7 +2643,7 @@ function startExam(){
   const queue = buildExamQueue();
   Object.assign(state, { mode:'exam', qtype:'mixed', title:EXAM.title, queue, idx:0,
     answered:{}, wrongMode:false, exam:true, selected:{}, selfScores:{}, review:false,
-    examDone:false, startTs: Date.now(), continuous:false, examResult:null });
+    examDone:false, startTs: Date.now(), continuous:false, examResult:null, sprint:false, sprintSelf:{} });
   state.timeLeft = EXAM.minutes * 60;
   clearInterval(state.timerId);
   state.timerId = setInterval(tick, 1000);
@@ -1928,12 +2685,15 @@ function renderQuiz(){
   const x = cur();
   if(!x){
     if(state.exam) return submitExam(false);
+    if(state.sprint){ finishSprint(); return; }
     finishPractice();
     return;
   }
   const i = state.idx, total = state.queue.length;
-  const chTitle = DATA.chapters[x.ch].title;
-  const typeLabel = state.exam ? EXAM_LABEL[x.type] : TYPES[x.type];
+  const chTitle = state.sprint ? '85%冲刺' : DATA.chapters[x.ch].title;
+  const chTag = state.sprint ? '85%冲刺 · 独立题库' : `第${x.ch}章 · ${esc(chTitle)}`;
+  const typeLabel = state.exam ? EXAM_LABEL[x.type]
+    : (state.sprint ? (x.type === 'subjective' ? '简答题' : TYPES[x.type]) : TYPES[x.type]);
   const inExam = state.exam && !state.examDone;
   const pos = state.exam ? typePos(i) : null;
 
@@ -1958,16 +2718,40 @@ function renderQuiz(){
     </div>`;
   } else if(x.type === 'subjective'){
     const val = state.selected[i] || '';
-    body = `<div class="vsub">简答题（本题 ${x.pts} 分）：请分点作答。交卷后展开参考答案，按采分点自评给分。</div>
-      <textarea class="fillinput" id="subjInput" rows="10" placeholder="在此输入你的答案……" ${inExam ? '' : 'disabled'} style="min-height:180px;resize:vertical;line-height:1.6;white-space:pre-wrap">${esc(val)}</textarea>`;
+    const pts = x.pts || x.q.pts || 10;
+    if(state.sprint){
+      const answered = state.answered[i] !== undefined;
+      body = `<div class="vsub">简答题（本题 ${pts} 分）：先自己作答，再查看参考答案并自评得分。${x.q.needCheck ? '本题资料未给出具体答案，已标注“需核对课件”。' : ''}</div>
+        <textarea class="fillinput" id="subjInput" rows="10" placeholder="在此输入你的答案……" ${answered ? 'disabled' : ''} style="min-height:180px;resize:vertical;line-height:1.6;white-space:pre-wrap">${esc(answered ? state.answered[i] : val)}</textarea>
+        ${answered ? '' : `<div class="row"><button class="btn primary" id="subjSubmit">✅ 提交作答，查看参考答案</button><button class="btn" id="subjSkip">跳过本题</button></div>`}`;
+    } else {
+      body = `<div class="vsub">简答题（本题 ${pts} 分）：请分点作答。交卷后展开参考答案，按采分点自评给分。</div>
+        <textarea class="fillinput" id="subjInput" rows="10" placeholder="在此输入你的答案……" ${inExam ? '' : 'disabled'} style="min-height:180px;resize:vertical;line-height:1.6;white-space:pre-wrap">${esc(val)}</textarea>`;
+    }
   }
 
-  if(!state.exam && state.answered[i] !== undefined){
+  if(!state.exam && state.answered[i] !== undefined && x.type !== 'subjective'){
     const ok = correctOf(x, state.answered[i]);
     const ansTxt = x.type==='choice' ? x.q.answer : x.type==='fill' ? x.q.answer : (x.q.answer ? '正确' : '错误');
     feedback = `<div class="feedback ${ok?'ok':'no'}">
       <div class="fx-title">${ok ? '✅ 回答正确！' : '❌ 回答错误，正确答案是 ' + esc(ansTxt)}</div>
       ${x.q.analysis ? `<div class="analysis">📖 解析：${esc(x.q.analysis)}</div>` : ''}
+    </div>`;
+  }
+  if(state.sprint && x.type === 'subjective' && state.answered[i] !== undefined){
+    const pts = x.pts || x.q.pts || 10;
+    const self = state.sprintSelf[i];
+    const mine = state.answered[i];
+    feedback = `<div class="feedback ok">
+      <div class="fx-title">📖 参考答案${x.q.needCheck ? '（需核对课件）' : ''}</div>
+      <div class="analysis" style="white-space:pre-wrap">${nl(x.q.a)}</div>
+      ${mine && String(mine).trim() ? `<div class="analysis" style="margin-top:8px">我的作答：${nl(mine)}</div>` : '<div class="analysis" style="margin-top:8px">我的作答：（未作答/已跳过）</div>'}
+      <div class="fx-title" style="margin-top:12px">自评得分（满分 ${pts} 分）</div>
+      <div class="row">
+        ${[pts, Math.round(pts/2), 0].filter((v, idx, arr) => arr.indexOf(v) === idx).map(v =>
+          `<button class="btn ${self===v?'primary':''}" data-self="${i}" data-v="${v}">${v} 分</button>`).join('')}
+      </div>
+      ${self !== undefined ? `<div class="analysis">已记录自评：${self} / ${pts} 分</div>` : '<div class="vsub">点击上方分数完成自评，然后点“下一题”。</div>'}
     </div>`;
   }
   if(state.exam && state.examDone){
@@ -2016,8 +2800,8 @@ function renderQuiz(){
     ${examBar}
     <div class="qcard">
       <div class="qmeta">
-        <span class="tag">第${x.ch}章 · ${esc(chTitle)}</span>
-        <span class="tag">${typeLabel} ${x.q.num}${state.exam ? ` · ${x.pts} 分` : ''}</span>
+        <span class="tag">${chTag}</span>
+        <span class="tag">${typeLabel} ${x.q.num}${state.exam ? ` · ${x.pts} 分` : ''}${(state.sprint && x.type === 'subjective') ? ` · ${x.pts || x.q.pts || 10} 分` : ''}</span>
       </div>
       <div class="stem">${esc(x.q.stem || x.q.q)}</div>
       ${body}
@@ -2029,7 +2813,10 @@ function renderQuiz(){
     </div>`;
 
   if(!state.exam){
-    $('#quitBtn').addEventListener('click', () => { clearInterval(state.timerId); clearTimeout(state.autoTimer); renderHome(); });
+    $('#quitBtn').addEventListener('click', () => {
+      clearInterval(state.timerId); clearTimeout(state.autoTimer);
+      if(state.sprint) renderSprintPicker(); else renderHome();
+    });
   }
   if(state.exam && !state.examDone){
     $('#submitBtn').addEventListener('click', () => {
@@ -2045,6 +2832,7 @@ function renderQuiz(){
     else {
       if(state.examDone){ show('view-result'); renderResult(); }
       else if(state.exam){ submitExam(false); }
+      else if(state.sprint){ finishSprint(); }
       else finishPractice();
     }
   });
@@ -2072,6 +2860,26 @@ function renderQuiz(){
     if(ta && !ta.disabled){
       ta.addEventListener('input', () => { state.selected[state.idx] = ta.value; updateSheet(); });
     }
+    if(state.sprint){
+      const submit = () => {
+        const box = $('#subjInput');
+        state.answered[state.idx] = box ? box.value : '';
+        state.selected[state.idx] = state.answered[state.idx];
+        renderQuiz();
+      };
+      const sb = $('#subjSubmit');
+      if(sb) sb.addEventListener('click', submit);
+      const sk = $('#subjSkip');
+      if(sk) sk.addEventListener('click', () => {
+        state.answered[state.idx] = '';
+        state.selected[state.idx] = '';
+        renderQuiz();
+      });
+      $$('#view-quiz [data-self]').forEach(b => b.addEventListener('click', () => {
+        state.sprintSelf[+b.dataset.self] = +b.dataset.v;
+        renderQuiz();
+      }));
+    }
   }
 }
 
@@ -2081,9 +2889,11 @@ function answer(k, val){
   if(state.answered[k] !== undefined) return;
   state.answered[k] = val;
   const ok = correctOf(x, val);
-  recordAnswer(x.ch, x.type, ok);
-  if(!ok) addWrong(x);
-  else noteCorrect(x);
+  if(!state.sprint){
+    recordAnswer(x.ch, x.type, ok);
+    if(!ok) addWrong(x);
+    else noteCorrect(x);
+  }
   renderQuiz();
   if(state.continuous){
     clearTimeout(state.autoTimer);
